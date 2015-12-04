@@ -4,7 +4,8 @@
         "3.18"
     ],
     "name": "PassCalc",
-    "description": "Calculate unique password from identifier and secret passphrase.",
+    "description": "This extension calculates strong unique passwords for each identifier and passphrase combination.",
+    "url": "https://github.com/tomashavlas/gnome-shell-extension-passcalc",
     "gettext-domain": "gnome-shell-extension-passcalc",
     "settings-schema": "org.gnome.shell.extensions.passcalc"
 }
