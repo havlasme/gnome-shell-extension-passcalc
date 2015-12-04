@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extension-passcalc">
+  <enum id="org.gnome.shell.extensions.passcalc.hash-type">
+    <value value="1" nick="SHA1" />
+    <value value="2" nick="SHA224" />
+    <value value="3" nick="SHA256" />
+    <value value="4" nick="SHA384" />
+    <value value="5" nick="SHA512" />
+  </enum>
+  <schema path="/org/gnome/shell/extensions/passcalc/" id="org.gnome.shell.extensions.passcalc">
+    <key type="b" name="copy-to-clipboard">
+      <default>true</default>
+      <summary>Copy to Clipboard</summary>
+    </key>
+    <key name="hash-type" enum="org.gnome.shell.extensions.passcalc.hash-type">
+      <default>'SHA512'</default>
+      <summary>Hash Type</summary>
+    </key>
+    <key type="i" name="password-length">
+      <default>15</default>
+      <summary>Password Length</summary>
+    </key>
+    <key type="s" name="password-salt">
+      <default>''</default>
+      <summary>Password Salt</summary>
+    </key>
+    <key type="as" name="recent-identifiers">
+      <default><![CDATA[[ ]]]></default>
+      <summary>Recent Identifiers</summary>
+    </key>
+    <key type="i" name="recent-identifiers-maximum">
+      <default>15</default>
+      <summary>Maximum of Shown Recent Identifiers</summary>
+    </key>
+    <key type="b" name="remove-lower-alpha">
+      <default>false</default>
+      <summary>Remove Lower Alpha</summary>
+    </key>
+    <key type="b" name="remove-upper-alpha">
+      <default>false</default>
+      <summary>Remove Upper Alpha</summary>
+    </key>
+    <key type="b" name="remove-numeric">
+      <default>false</default>
+      <summary>Remove Numeric</summary>
+    </key>
+    <key type="b" name="remove-symbols">
+      <default>false</default>
+      <summary>Remove Symbols</summary>
+    </key>
+    <key name="shortcut-keybind" type="as">
+      <default><![CDATA[['F12']]]></default>
+      <summary>Shortcut used to open and close password calculator</summary>
+    </key>
+    <key type="b" name="show-notification">
+      <default>true</default>
+      <summary>Show Copy Notification</summary>
+    </key>
+  </schema>
+</schemalist>

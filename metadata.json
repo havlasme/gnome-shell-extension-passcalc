@@ -1,0 +1,10 @@
+{
+    "uuid": "passcalc@raven-systems.eu",
+    "shell-version": [
+        "3.18"
+    ],
+    "name": "PassCalc",
+    "description": "Calculate unique password from identifier and secret passphrase.",
+    "gettext-domain": "gnome-shell-extension-passcalc",
+    "settings-schema": "org.gnome.shell.extensions.passcalc"
+}
