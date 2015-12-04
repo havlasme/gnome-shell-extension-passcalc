@@ -12,6 +12,10 @@
       <default>true</default>
       <summary>Copy to Clipboard</summary>
     </key>
+    <key type="i" name="clipboard-timeout">
+      <default>5000</default>
+      <summary>Clipboard Timeout</summary>
+    </key>    
     <key name="hash-type" enum="org.gnome.shell.extensions.passcalc.hash-type">
       <default>'SHA512'</default>
       <summary>Hash Type</summary>

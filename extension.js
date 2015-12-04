@@ -31,15 +31,15 @@ const Panel = imports.ui.panel;
 const Gettext = imports.gettext.domain('gnome-shell-extension-passcalc');
 const _ = Gettext.gettext;
 
-const Clipboard = St.Clipboard.get_default();
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const Clipboard = Me.imports.clipboard;
 const Config = Me.imports.config;
 const Convenience = Me.imports.convenience;
 const Enum = Me.imports.enum;
 const Hash = Me.imports.hash;
 
-const CLIPBOARD_TYPE = St.ClipboardType.CLIPBOARD;
+const ID_ENTRY_FOCUS_TIMEOUT = 20;
 
 const RecentIdPopupMenuItem = new Lang.Class({
     Name: 'RecentIdPopupMenuItem',
@@ -62,6 +62,7 @@ const RecentIdPopupMenuItem = new Lang.Class({
 const PasswordCalculator = Lang.Class({
     Name: 'PasswordCalculator',
     Extends: PanelMenu.Button,
+    _pw: '',
 
     _init: function() {
         this.parent(0.0, _('PasswCalc'));
@@ -126,7 +127,7 @@ const PasswordCalculator = Lang.Class({
         this.menu.connect('open-state-changed', Lang.bind(this, function(sender, open) {
             this.clearEntry();
             if (open) {
-                Mainloop.timeout_add(20, Lang.bind(this, function() {
+                Mainloop.timeout_add(ID_ENTRY_FOCUS_TIMEOUT, Lang.bind(this, function() {
                     this.idEntry.grab_key_focus();
                 }));
             }
@@ -211,8 +212,18 @@ const PasswordCalculator = Lang.Class({
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 this.addRecentId(id);
                 Main.notify(_('PassCalc: Password copied to clipboard.'));
-                Clipboard.set_text(CLIPBOARD_TYPE, pw);
+                Clipboard.set(pw);
                 this.menu.close();
+                
+                this._pw = Hash.sha512(pw);
+                Mainloop.timeout_add(this._settings.get_int(Config.SETTINGS_CLIPBOARD_TIMEOUT), Lang.bind(this, function() {
+                    Clipboard.get(Lang.bind(this, function(cb, text) {
+                        if (this._pw == Hash.sha512(text)) {
+                            Clipboard.clear();
+                        }
+                        this._pw = '';
+                    }));
+                }));
             }
         } else {
             this.passwordBox.set_text(_('your password'));

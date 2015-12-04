@@ -63,6 +63,7 @@ const PassCalcSettingsWidget = new GObject.Class({
         let recentIdAdd = uiBuilder.get_object('recent-id-add');
         let recentIdRemove = uiBuilder.get_object('recent-id-remove');
         let copyToClipboardSwitch = uiBuilder.get_object('copy-to-clipboard-switch');
+        let clipboardTimeoutEntry = uiBuilder.get_object('clipboard-timeout-entry');
         let showCopyNotificationSwitch = uiBuilder.get_object('show-copy-notification-switch');
         let maxRecentIdsEntry = uiBuilder.get_object('max-recent-ids-entry');
         let shortcutKeybindTreeviewColumn = uiBuilder.get_object('shortcut-keybind-treeview-column');
@@ -95,19 +96,24 @@ const PassCalcSettingsWidget = new GObject.Class({
             this._settings.set_boolean(Config.SETTINGS_COPY_TO_CLIPBOARD, w.active);
         }));
         
+        clipboardTimeoutEntry.set_value(this._settings.get_int(Config.SETTINGS_CLIPBOARD_TIMEOUT));
+        clipboardTimeoutEntry.connect('notify::text', Lang.bind(this, function(w) {
+            this._settings.set_int(Config.SETTINGS_CLIPBOARD_TIMEOUT, clipboardTimeoutEntry.get_value_as_int());
+        }));
+        
         showCopyNotificationSwitch.set_active(this._settings.get_boolean(Config.SETTINGS_SHOW_NOTIFICATION));
         showCopyNotificationSwitch.connect('notify::active', Lang.bind(this, function(w) {
             this._settings.set_boolean(Config.SETTINGS_SHOW_NOTIFICATION, w.active);
         }));
         
-        maxRecentIdsEntry.set_text(this._settings.get_int(Config.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM).toString());
+        maxRecentIdsEntry.set_value(this._settings.get_int(Config.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM));
         maxRecentIdsEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this._settings.set_int(Config.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM, parseInt(w.get_text()));
+            this._settings.set_int(Config.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM, w.get_value_as_int());
         }));      
         
-        passwordLengthEntry.set_text(this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH).toString());
+        passwordLengthEntry.set_value(this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH));
         passwordLengthEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this._settings.set_int(Config.SETTINGS_PASSWORD_LENGTH, parseInt(w.get_text()));
+            this._settings.set_int(Config.SETTINGS_PASSWORD_LENGTH, w.get_value_as_int());
         }));
         
         passwordSaltEntry.set_text(this._settings.get_string(Config.SETTINGS_PASSWORD_SALT));

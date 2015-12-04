@@ -12,11 +12,16 @@ This extension calculates strong unique passwords for each identifier and passph
 - support for limiting character groups (lower alpha/upper alpha/numbers/symbols) in calculated password
 - quickly accessible recently used identifiers in drop-down menu
 - support for activation with keyboard shortcut
+- support for clearing password from clipboard after specified timeout
 
 ## Password calculation formula
 
 The formula used to calculate password is as simple as 
 "[identifier][passphrase][salt]" -> SHA1/SHA-224/SHA-256/SHA-384/SHA-512 -> BASE64
+
+## Installation
+
+https://extensions.gnome.org/extension/1021/passcalc/
 
 ## Thanks
 
