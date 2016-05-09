@@ -1,7 +1,8 @@
 {
     "uuid": "passcalc@raven-systems.eu",
     "shell-version": [
-        "3.18"
+        "3.18",
+        "3.20"
     ],
     "name": "PassCalc",
     "description": "This extension calculates strong unique passwords for each identifier and passphrase combination.",
