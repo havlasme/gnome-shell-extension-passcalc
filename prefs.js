@@ -120,7 +120,7 @@ const PassCalcSettingsWidget = new GObject.Class({
         }));
         
         let iter = compTypeStore.append();
-        compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.CONCAT, _('String concatenation (Deprecated)') ]);
+        compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.CONCAT, _('String concatenation') ]);
         let iter = compTypeStore.append();
         compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.KDF, _('Key derivation function') ]);
         let renderer = new Gtk.CellRendererText();
@@ -154,9 +154,9 @@ const PassCalcSettingsWidget = new GObject.Class({
         }));
         
         let iter = kdfTypeStore.append();
-        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA256, _('HKDF with SHA-256') ]);
+        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA256, _('HKDF (SHA-256)') ]);
         let iter = kdfTypeStore.append();
-        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA512, _('HKDF with SHA-512') ]);
+        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA512, _('HKDF (SHA-512)') ]);
         let renderer = new Gtk.CellRendererText();
         kdfTypeCombo.pack_start(renderer, true);
         kdfTypeCombo.add_attribute(renderer, 'text', 1);
