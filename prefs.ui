@@ -6,7 +6,7 @@
     <property name="upper">60000</property>
     <property name="step_increment">500</property>
   </object>
-  <object class="GtkListStore" id="comp-type-store">
+  <object class="GtkListStore" id="comp-method-store">
     <columns>
       <!-- column-name id -->
       <column type="gint"/>
@@ -434,13 +434,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="comp-type-box">
+          <object class="GtkBox" id="comp-method-box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">5</property>
             <property name="margin_right">5</property>
             <child>
-              <object class="GtkLabel" id="comp-type-label">
+              <object class="GtkLabel" id="comp-method-label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_right">10</property>
@@ -453,10 +453,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBox" id="comp-type-combo">
+              <object class="GtkComboBox" id="comp-method-combo">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="model">comp-type-store</property>
+                <property name="model">comp-method-store</property>
                 <property name="id_column">0</property>
               </object>
               <packing>
@@ -634,7 +634,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">15</property>
           </packing>
         </child>
       </object>

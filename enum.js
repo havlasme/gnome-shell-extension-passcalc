@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-const COMP_TYPE = {
+const COMP_METHOD = {
     CONCAT: 1,
     KDF: 2
 };

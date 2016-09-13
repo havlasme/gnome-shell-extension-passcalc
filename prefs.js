@@ -70,8 +70,8 @@ const PassCalcSettingsWidget = new GObject.Class({
         let passwordSaltEntry = uiBuilder.get_object('password-salt-entry');
         let hashTypeStore = uiBuilder.get_object('hash-type-store');
         let hashTypeCombo = uiBuilder.get_object('hash-type-combo');
-        let compTypeStore = uiBuilder.get_object('comp-type-store');
-        let compTypeCombo = uiBuilder.get_object('comp-type-combo');
+        let compMethodStore = uiBuilder.get_object('comp-method-store');
+        let compMethodCombo = uiBuilder.get_object('comp-method-combo');
         let kdfTypeStore = uiBuilder.get_object('kdf-type-store');
         let kdfTypeCombo = uiBuilder.get_object('kdf-type-combo');
         let removeLowerAlphaCheck = uiBuilder.get_object('remove-lower-alpha-check');
@@ -119,21 +119,21 @@ const PassCalcSettingsWidget = new GObject.Class({
             this._settings.set_string(Config.SETTINGS_PASSWORD_SALT, w.get_text());
         }));
         
-        let iter = compTypeStore.append();
-        compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.CONCAT, _('String concatenation') ]);
-        let iter = compTypeStore.append();
-        compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.KDF, _('Key derivation function') ]);
+        let iter = compMethodStore.append();
+        compMethodStore.set(iter, [ 0, 1 ], [ Enum.COMP_METHOD.CONCAT, _('String concatenation') ]);
+        let iter = compMethodStore.append();
+        compMethodStore.set(iter, [ 0, 1 ], [ Enum.COMP_METHOD.KDF, _('Key derivation function') ]);
         let renderer = new Gtk.CellRendererText();
-        compTypeCombo.pack_start(renderer, true);
-        compTypeCombo.add_attribute(renderer, 'text', 1);
-        compTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_COMP_TYPE) - 1);
-        compTypeCombo.connect('changed', Lang.bind(this, function(w) {
+        compMethodCombo.pack_start(renderer, true);
+        compMethodCombo.add_attribute(renderer, 'text', 1);
+        compMethodCombo.set_active(this._settings.get_enum(Config.SETTINGS_COMP_METHOD) - 1);
+        compMethodCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)
                 return;
 
-            let id = compTypeStore.get_value(iter, 0);
-            this._settings.set_enum(Config.SETTINGS_COMP_TYPE, id);
+            let id = compMethodStore.get_value(iter, 0);
+            this._settings.set_enum(Config.SETTINGS_COMP_METHOD, id);
         }));
 
         let iter = hashTypeStore.append();
@@ -160,7 +160,7 @@ const PassCalcSettingsWidget = new GObject.Class({
         let renderer = new Gtk.CellRendererText();
         kdfTypeCombo.pack_start(renderer, true);
         kdfTypeCombo.add_attribute(renderer, 'text', 1);
-        kdfTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_KDF_TYPE));
+        kdfTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_KDF_TYPE)-1);
         kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)

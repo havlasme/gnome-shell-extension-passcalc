@@ -16,7 +16,7 @@
 **/
 
 const SETTINGS_CLIPBOARD_TIMEOUT = 'clipboard-timeout';
-const SETTINGS_COMP_TYPE = 'comp-type';
+const SETTINGS_COMP_METHOD = 'comp-method';
 const SETTINGS_HASH_TYPE = 'hash-type';
 const SETTINGS_KDF_TYPE = 'kdf-type';
 const SETTINGS_PASSWORD_LENGTH = 'password-length';

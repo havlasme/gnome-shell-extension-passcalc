@@ -162,7 +162,7 @@ const PasswordCalculator = Lang.Class({
             let salt = this._settings.get_string(Config.SETTINGS_PASSWORD_SALT);  
             let pw = id + pp + salt;
             let pwlen = this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH);
-            if (this._settings.get_enum(Config.SETTINGS_COMP_TYPE) == Enum.COMP_TYPE.CONCAT) {
+            if (this._settings.get_enum(Config.SETTINGS_COMP_METHOD) == Enum.COMP_METHOD.CONCAT) {
                 switch(this._settings.get_enum(Config.SETTINGS_HASH_TYPE)) {
                     case Enum.HASH_TYPE.SHA256:
                         pw = SJCL.hash.sha256(pw);
