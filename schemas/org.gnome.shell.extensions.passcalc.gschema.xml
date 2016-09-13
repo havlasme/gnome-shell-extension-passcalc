@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gnome-shell-extension-passcalc">
   <enum id="org.gnome.shell.extensions.passcalc.comp-type">
-    <value value="1" nick="String concatenation (Deprecated)" />
+    <value value="1" nick="String concatenation" />
     <value value="2" nick="Key derivation function" />
   </enum>
   <enum id="org.gnome.shell.extensions.passcalc.hash-type">
-    <value value="1" nick="SHA-1" />
-    <value value="2" nick="SHA-224" />
     <value value="3" nick="SHA-256" />
-    <value value="4" nick="SHA-384" />
     <value value="5" nick="SHA-512" />
   </enum>
   <enum id="org.gnome.shell.extensions.passcalc.kdf-type">
@@ -21,7 +18,7 @@
       <summary>Clipboard Timeout</summary>
     </key>    
     <key name="comp-type" enum="org.gnome.shell.extensions.passcalc.comp-type">
-      <default>'String concatenation (Deprecated)'</default>
+      <default>'String concatenation'</default>
       <summary>Password Computation Type</summary>
     </key>
     <key name="hash-type" enum="org.gnome.shell.extensions.passcalc.hash-type">

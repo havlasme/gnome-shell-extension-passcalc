@@ -137,19 +137,13 @@ const PassCalcSettingsWidget = new GObject.Class({
         }));
 
         let iter = hashTypeStore.append();
-        hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA1, _('SHA1') ]);
-        let iter = hashTypeStore.append();
-        hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA224, _('SHA-224') ]);
-        let iter = hashTypeStore.append();
         hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA256, _('SHA-256') ]);
-        let iter = hashTypeStore.append();
-        hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA384, _('SHA-384') ]);
         let iter = hashTypeStore.append();
         hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA512, _('SHA-512') ]);
         let renderer = new Gtk.CellRendererText();
         hashTypeCombo.pack_start(renderer, true);
         hashTypeCombo.add_attribute(renderer, 'text', 1);
-        hashTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_HASH_TYPE) - 1);
+        hashTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_HASH_TYPE)-1);
         hashTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)
@@ -166,7 +160,7 @@ const PassCalcSettingsWidget = new GObject.Class({
         let renderer = new Gtk.CellRendererText();
         kdfTypeCombo.pack_start(renderer, true);
         kdfTypeCombo.add_attribute(renderer, 'text', 1);
-        kdfTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_KDF_TYPE) - 1);
+        kdfTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_KDF_TYPE));
         kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)

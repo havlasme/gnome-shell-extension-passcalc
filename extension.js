@@ -37,7 +37,6 @@ const Clipboard = Me.imports.clipboard;
 const Config = Me.imports.config;
 const Convenience = Me.imports.convenience;
 const Enum = Me.imports.enum;
-const Hash = Me.imports.hash;
 const SJCL = Me.imports.libsjcl;
 
 const ID_ENTRY_FOCUS_TIMEOUT = 20;
@@ -165,20 +164,11 @@ const PasswordCalculator = Lang.Class({
             let pwlen = this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH);
             if (this._settings.get_enum(Config.SETTINGS_COMP_TYPE) == Enum.COMP_TYPE.CONCAT) {
                 switch(this._settings.get_enum(Config.SETTINGS_HASH_TYPE)) {
-                    case Enum.HASH_TYPE.SHA1:
-                        pw = Hash.sha1(pw);
-                        break;
-                    case Enum.HASH_TYPE.SHA224:
-                        pw = Hash.sha224(pw);
-                        break;
                     case Enum.HASH_TYPE.SHA256:
-                        pw = Hash.sha256(pw);
-                        break;
-                    case Enum.HASH_TYPE.SHA384:
-                        pw = Hash.sha384(pw);
+                        pw = SJCL.hash.sha256(pw);
                         break;
                     case Enum.HASH_TYPE.SHA512:
-                        pw = Hash.sha512(pw);
+                        pw = SJCL.hash.sha512(pw);
                         break;
                 }
             } else {
@@ -228,10 +218,10 @@ const PasswordCalculator = Lang.Class({
                 Clipboard.set(pw);
                 this.menu.close();
                 
-                this._pw = Hash.sha512(pw);
+                this._pw = SJCL.hash.sha512(pw);
                 Mainloop.timeout_add(this._settings.get_int(Config.SETTINGS_CLIPBOARD_TIMEOUT), Lang.bind(this, function() {
                     Clipboard.get(Lang.bind(this, function(cb, text) {
-                        if (this._pw == Hash.sha512(text)) {
+                        if (this._pw == SJCL.hash.sha512(text)) {
                             Clipboard.clear();
                         }
                         this._pw = '';
