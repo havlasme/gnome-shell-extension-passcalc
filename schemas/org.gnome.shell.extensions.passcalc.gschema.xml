@@ -16,10 +16,6 @@
     <value value="2" nick="HKDF SHA-512" />
   </enum>
   <schema path="/org/gnome/shell/extensions/passcalc/" id="org.gnome.shell.extensions.passcalc">
-    <key type="b" name="copy-to-clipboard">
-      <default>true</default>
-      <summary>Copy to Clipboard</summary>
-    </key>
     <key type="i" name="clipboard-timeout">
       <default>5000</default>
       <summary>Clipboard Timeout</summary>

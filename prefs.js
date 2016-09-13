@@ -62,7 +62,6 @@ const PassCalcSettingsWidget = new GObject.Class({
         let recentIdTreeviewIdColumn = uiBuilder.get_object('recent-id-treeview-id-column');
         let recentIdAdd = uiBuilder.get_object('recent-id-add');
         let recentIdRemove = uiBuilder.get_object('recent-id-remove');
-        let copyToClipboardSwitch = uiBuilder.get_object('copy-to-clipboard-switch');
         let clipboardTimeoutEntry = uiBuilder.get_object('clipboard-timeout-entry');
         let showCopyNotificationSwitch = uiBuilder.get_object('show-copy-notification-switch');
         let maxRecentIdsEntry = uiBuilder.get_object('max-recent-ids-entry');
@@ -94,11 +93,6 @@ const PassCalcSettingsWidget = new GObject.Class({
         recentIdAdd.connect('clicked', Lang.bind(this, this._onRecentIdAdd));
         
         recentIdRemove.connect('clicked', Lang.bind(this, this._onRecentIdRemove));
-        
-        copyToClipboardSwitch.set_active(this._settings.get_boolean(Config.SETTINGS_COPY_TO_CLIPBOARD));
-        copyToClipboardSwitch.connect('notify::active', Lang.bind(this, function(w) {
-            this._settings.set_boolean(Config.SETTINGS_COPY_TO_CLIPBOARD, w.active);
-        }));
         
         clipboardTimeoutEntry.set_value(this._settings.get_int(Config.SETTINGS_CLIPBOARD_TIMEOUT));
         clipboardTimeoutEntry.connect('notify::text', Lang.bind(this, function(w) {

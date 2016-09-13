@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-const SETTINGS_COPY_TO_CLIPBOARD = 'copy-to-clipboard';
 const SETTINGS_CLIPBOARD_TIMEOUT = 'clipboard-timeout';
 const SETTINGS_COMP_TYPE = 'comp-type';
 const SETTINGS_HASH_TYPE = 'hash-type';
