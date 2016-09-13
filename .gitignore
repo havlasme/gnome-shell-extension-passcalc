@@ -1,4 +1,6 @@
-*~
-*.zip
+*.iml
+.idea/
 
+
+build/
 schemas/gschemas.compiled
