@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gnome-shell-extension-passcalc">
+  <enum id="org.gnome.shell.extensions.passcalc.comp-type">
+    <value value="1" nick="String concatenation (Deprecated)" />
+    <value value="2" nick="Key derivation function" />
+  </enum>
   <enum id="org.gnome.shell.extensions.passcalc.hash-type">
-    <value value="1" nick="SHA1" />
-    <value value="2" nick="SHA224" />
-    <value value="3" nick="SHA256" />
-    <value value="4" nick="SHA384" />
-    <value value="5" nick="SHA512" />
+    <value value="1" nick="SHA-1" />
+    <value value="2" nick="SHA-224" />
+    <value value="3" nick="SHA-256" />
+    <value value="4" nick="SHA-384" />
+    <value value="5" nick="SHA-512" />
+  </enum>
+  <enum id="org.gnome.shell.extensions.passcalc.kdf-type">
+    <value value="1" nick="HKDF SHA-256" />
+    <value value="2" nick="HKDF SHA-512" />
   </enum>
   <schema path="/org/gnome/shell/extensions/passcalc/" id="org.gnome.shell.extensions.passcalc">
     <key type="b" name="copy-to-clipboard">
@@ -16,9 +24,17 @@
       <default>5000</default>
       <summary>Clipboard Timeout</summary>
     </key>    
+    <key name="comp-type" enum="org.gnome.shell.extensions.passcalc.comp-type">
+      <default>'String concatenation (Deprecated)'</default>
+      <summary>Password Computation Type</summary>
+    </key>
     <key name="hash-type" enum="org.gnome.shell.extensions.passcalc.hash-type">
-      <default>'SHA512'</default>
+      <default>'SHA-512'</default>
       <summary>Hash Type</summary>
+    </key>
+    <key name="kdf-type" enum="org.gnome.shell.extensions.passcalc.kdf-type">
+      <default>'HKDF SHA-512'</default>
+      <summary>Key Derivation Function Type</summary>
     </key>
     <key type="i" name="password-length">
       <default>15</default>

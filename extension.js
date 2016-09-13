@@ -38,6 +38,7 @@ const Config = Me.imports.config;
 const Convenience = Me.imports.convenience;
 const Enum = Me.imports.enum;
 const Hash = Me.imports.hash;
+const SJCL = Me.imports.libsjcl;
 
 const ID_ENTRY_FOCUS_TIMEOUT = 20;
 
@@ -161,22 +162,34 @@ const PasswordCalculator = Lang.Class({
         if (id != '' && pp != '') {
             let salt = this._settings.get_string(Config.SETTINGS_PASSWORD_SALT);  
             let pw = id + pp + salt;
-            switch(this._settings.get_enum(Config.SETTINGS_HASH_TYPE)) {
-                case Enum.HASH_TYPE.SHA1:
-                    pw = Hash.sha1(pw);
-                    break;
-                case Enum.HASH_TYPE.SHA224:
-                    pw = Hash.sha224(pw);
-                    break;
-                case Enum.HASH_TYPE.SHA256:
-                    pw = Hash.sha256(pw);
-                    break;
-                case Enum.HASH_TYPE.SHA384:
-                    pw = Hash.sha384(pw);
-                    break;
-                case Enum.HASH_TYPE.SHA512:
-                    pw = Hash.sha512(pw);
-                    break;
+            let pwlen = this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH);
+            if (this._settings.get_enum(Config.SETTINGS_COMP_TYPE) == Enum.COMP_TYPE.CONCAT) {
+                switch(this._settings.get_enum(Config.SETTINGS_HASH_TYPE)) {
+                    case Enum.HASH_TYPE.SHA1:
+                        pw = Hash.sha1(pw);
+                        break;
+                    case Enum.HASH_TYPE.SHA224:
+                        pw = Hash.sha224(pw);
+                        break;
+                    case Enum.HASH_TYPE.SHA256:
+                        pw = Hash.sha256(pw);
+                        break;
+                    case Enum.HASH_TYPE.SHA384:
+                        pw = Hash.sha384(pw);
+                        break;
+                    case Enum.HASH_TYPE.SHA512:
+                        pw = Hash.sha512(pw);
+                        break;
+                }
+            } else {
+                switch(this._settings.get_enum(Config.SETTINGS_KDF_TYPE)) {
+                    case Enum.KDF_TYPE.HKDF_SHA256:
+                        pw = SJCL.hkdf.sha256(id, pp, salt, pwlen*6);
+                        break;
+                    case Enum.KDF_TYPE.HKDF_SHA512:
+                        pw = SJCL.hkdf.sha512(id, pp, salt, pwlen*6);
+                        break;
+                }
             }
 
             if (this._settings.get_boolean(Config.SETTINGS_REMOVE_LOWER_ALPHA)) {
@@ -196,8 +209,6 @@ const PasswordCalculator = Lang.Class({
                 Main.notify(_('Unable to calculate password with current settings.'));
                 return;
             }
-            
-            let pwlen = this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH);
             
             while (pw.length < pwlen) {
                 pw += pw;

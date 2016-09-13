@@ -17,7 +17,9 @@
 
 const SETTINGS_COPY_TO_CLIPBOARD = 'copy-to-clipboard';
 const SETTINGS_CLIPBOARD_TIMEOUT = 'clipboard-timeout';
+const SETTINGS_COMP_TYPE = 'comp-type';
 const SETTINGS_HASH_TYPE = 'hash-type';
+const SETTINGS_KDF_TYPE = 'kdf-type';
 const SETTINGS_PASSWORD_LENGTH = 'password-length';
 const SETTINGS_PASSWORD_SALT = 'password-salt';
 const SETTINGS_RECENT_IDENTIFIERS = 'recent-identifiers';

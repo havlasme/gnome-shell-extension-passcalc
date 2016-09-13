@@ -13,6 +13,7 @@ This extension calculates strong unique passwords for each identifier and passph
 - quickly accessible recently used identifiers in drop-down menu
 - support for activation with keyboard shortcut
 - support for clearing password from clipboard after specified timeout
+- support for key derivation function (HKDF) as possibly safer alternative to simple string concatenation formula described below
 
 ## Password calculation formula
 

@@ -6,7 +6,23 @@
     <property name="upper">60000</property>
     <property name="step_increment">500</property>
   </object>
+  <object class="GtkListStore" id="comp-type-store">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name hash -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="hash-type-store">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name hash -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="kdf-type-store">
     <columns>
       <!-- column-name id -->
       <column type="gint"/>
@@ -457,6 +473,46 @@
           </packing>
         </child>
         <child>
+          <object class="GtkBox" id="comp-type-box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <child>
+              <object class="GtkLabel" id="comp-type-label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_right">10</property>
+                <property name="label" translatable="yes">Password computation method</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="comp-type-combo">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">comp-type-store</property>
+                <property name="id_column">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">9</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox" id="hash-type-box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -493,7 +549,47 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">9</property>
+            <property name="position">10</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="kdf-type-box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <child>
+              <object class="GtkLabel" id="kdf-type-label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_right">10</property>
+                <property name="label" translatable="yes">Key derivation function</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="kdf-type-combo">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">kdf-type-store</property>
+                <property name="id_column">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">11</property>
           </packing>
         </child>
         <child>
@@ -509,7 +605,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">10</property>
+            <property name="position">12</property>
           </packing>
         </child>
         <child>
@@ -526,7 +622,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">11</property>
+            <property name="position">13</property>
           </packing>
         </child>
         <child>
@@ -543,7 +639,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">12</property>
+            <property name="position">14</property>
           </packing>
         </child>
         <child>
@@ -560,7 +656,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">13</property>
+            <property name="position">15</property>
           </packing>
         </child>
         <child>
@@ -577,7 +673,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">14</property>
+            <property name="position">16</property>
           </packing>
         </child>
       </object>

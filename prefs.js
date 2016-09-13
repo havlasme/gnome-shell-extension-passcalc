@@ -71,6 +71,10 @@ const PassCalcSettingsWidget = new GObject.Class({
         let passwordSaltEntry = uiBuilder.get_object('password-salt-entry');
         let hashTypeStore = uiBuilder.get_object('hash-type-store');
         let hashTypeCombo = uiBuilder.get_object('hash-type-combo');
+        let compTypeStore = uiBuilder.get_object('comp-type-store');
+        let compTypeCombo = uiBuilder.get_object('comp-type-combo');
+        let kdfTypeStore = uiBuilder.get_object('kdf-type-store');
+        let kdfTypeCombo = uiBuilder.get_object('kdf-type-combo');
         let removeLowerAlphaCheck = uiBuilder.get_object('remove-lower-alpha-check');
         let removeUpperAlphaCheck = uiBuilder.get_object('remove-upper-alpha-check');
         let removeNumericCheck = uiBuilder.get_object('remove-numeric-check');
@@ -121,6 +125,23 @@ const PassCalcSettingsWidget = new GObject.Class({
             this._settings.set_string(Config.SETTINGS_PASSWORD_SALT, w.get_text());
         }));
         
+        let iter = compTypeStore.append();
+        compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.CONCAT, _('String concatenation (Deprecated)') ]);
+        let iter = compTypeStore.append();
+        compTypeStore.set(iter, [ 0, 1 ], [ Enum.COMP_TYPE.KDF, _('Key derivation function') ]);
+        let renderer = new Gtk.CellRendererText();
+        compTypeCombo.pack_start(renderer, true);
+        compTypeCombo.add_attribute(renderer, 'text', 1);
+        compTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_COMP_TYPE) - 1);
+        compTypeCombo.connect('changed', Lang.bind(this, function(w) {
+            let [success, iter] = w.get_active_iter();
+            if (!success)
+                return;
+
+            let id = compTypeStore.get_value(iter, 0);
+            this._settings.set_enum(Config.SETTINGS_COMP_TYPE, id);
+        }));
+
         let iter = hashTypeStore.append();
         hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA1, _('SHA1') ]);
         let iter = hashTypeStore.append();
@@ -142,6 +163,23 @@ const PassCalcSettingsWidget = new GObject.Class({
 
             let id = hashTypeStore.get_value(iter, 0);
             this._settings.set_enum(Config.SETTINGS_HASH_TYPE, id);
+        }));
+        
+        let iter = kdfTypeStore.append();
+        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA256, _('HKDF with SHA-256') ]);
+        let iter = kdfTypeStore.append();
+        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA512, _('HKDF with SHA-512') ]);
+        let renderer = new Gtk.CellRendererText();
+        kdfTypeCombo.pack_start(renderer, true);
+        kdfTypeCombo.add_attribute(renderer, 'text', 1);
+        kdfTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_KDF_TYPE) - 1);
+        kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
+            let [success, iter] = w.get_active_iter();
+            if (!success)
+                return;
+
+            let id = kdfTypeStore.get_value(iter, 0);
+            this._settings.set_enum(Config.SETTINGS_KDF_TYPE, id);
         }));
         
         this._settings.bind(Config.SETTINGS_REMOVE_LOWER_ALPHA, removeLowerAlphaCheck, 'active', Gio.SettingsBindFlags.DEFAULT);

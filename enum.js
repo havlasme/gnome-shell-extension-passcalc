@@ -15,6 +15,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+const COMP_TYPE = {
+    CONCAT: 1,
+    KDF: 2
+}
+
 const HASH_TYPE = {
     SHA1: 1,
     SHA224: 2,
@@ -22,3 +27,8 @@ const HASH_TYPE = {
     SHA384: 4,
     SHA512: 5
 };
+
+const KDF_TYPE = {
+    HKDF_SHA256: 1,
+    HKDF_SHA512: 2
+}
