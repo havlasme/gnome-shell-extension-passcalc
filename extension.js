@@ -222,7 +222,9 @@ const PasswordCalculator = Lang.Class({
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 this.addRecentId(id);
-                Main.notify(_('PassCalc: Password copied to clipboard.'));
+                if (this._settings.get_boolean(Config.SETTINGS_SHOW_NOTIFICATION)) {
+                    Main.notify(_('PassCalc: Password copied to clipboard.'));
+                }
                 Clipboard.set(pw);
                 this.menu.close();
                 
