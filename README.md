@@ -9,8 +9,8 @@ This extension computes strong unique passwords for each domain and passphrase c
 - activation with keyboard shortcut
 - control length of computed password
 - quickly accessible recently used domains in drop-down menu
-- multiple hash functions used to compute password
-- key derivation function as possibly safer alternative to simple string concatenation formula described below
+- multiple hash functions (SHA-256 / SHA-512) used to compute password
+- key derivation function (HKDF / PBKDF2) as possibly safer alternative to simple string concatenation formula described below
 - hash salt support
 - filtering character groups (lower-case alpha / upper-case alpha / numbers / special symbols) in computed password
 - clearing password from clipboard after specified time

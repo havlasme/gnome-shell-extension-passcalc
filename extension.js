@@ -278,6 +278,8 @@ const PasswordCalculator = Lang.Class({
                 return SJCL.hkdf.sha256(domain, passphrase, salt, length);
             case E.KDF_TYPE.HKDF_SHA512:
                 return SJCL.hkdf.sha512(domain, passphrase, salt, length);
+            case E.KDF_TYPE.PBKDF2_HMAC_SHA256:
+                return SJCL.pbkdf2.sha256(domain, passphrase, salt, length);
         }
 
         return _('unavailable');

@@ -275,9 +275,11 @@ const PassCalcPrefsWidget = new GObject.Class({
 
         // key derivation function combobox
         let iter = this._kdfTypeStore.append();
-        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA256, _('HKDF (SHA-256)') ]);
+        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA256, _('HKDF-SHA256') ]);
         let iter = this._kdfTypeStore.append();
-        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA512, _('HKDF (SHA-512)') ]);
+        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA512, _('HKDF-SHA512') ]);
+        let iter = this._kdfTypeStore.append();
+        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.PBKDF2_HMAC_SHA256, _('PBKDF2-HMAC-SHA256') ]);
         let renderer = new Gtk.CellRendererText();
         this._kdfTypeCombo.pack_start(renderer, true);
         this._kdfTypeCombo.add_attribute(renderer, 'text', 1);

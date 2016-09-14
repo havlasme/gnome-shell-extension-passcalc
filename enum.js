@@ -27,5 +27,6 @@ const HASH_TYPE = {
 
 const KDF_TYPE = {
     HKDF_SHA256: 1,
-    HKDF_SHA512: 2
+    HKDF_SHA512: 2,
+    PBKDF2_HMAC_SHA256: 3
 };

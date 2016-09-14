@@ -9,8 +9,9 @@
     <value value="5" nick="SHA-512" />
   </enum>
   <enum id="org.gnome.shell.extensions.passcalc.kdf-type">
-    <value value="1" nick="HKDF (SHA-256)" />
-    <value value="2" nick="HKDF (SHA-512)" />
+    <value value="1" nick="HKDF-SHA256" />
+    <value value="2" nick="HKDF-SHA512" />
+    <value value="3" nick="PBKDF2-HMAC-SHA256" />
   </enum>
   <schema path="/org/gnome/shell/extensions/passcalc/" id="org.gnome.shell.extensions.passcalc">
     <key type="i" name="clipboard-timeout">
@@ -26,7 +27,7 @@
       <summary>Hash type</summary>
     </key>
     <key name="kdf-type" enum="org.gnome.shell.extensions.passcalc.kdf-type">
-      <default>'HKDF (SHA-512)'</default>
+      <default>'HKDF-SHA512'</default>
       <summary>Key derivation function</summary>
     </key>
     <key type="i" name="password-length">
