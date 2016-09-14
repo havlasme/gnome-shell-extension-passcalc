@@ -20,7 +20,6 @@
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const Pango = imports.gi.Pango;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -30,8 +29,8 @@ const _ = Gettext.gettext;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
-const Config = Me.imports.config;
-const Enum = Me.imports.enum;
+const C = Me.imports.config;
+const E = Me.imports.enum;
 
 const PassCalcSettingsWidget = new GObject.Class({
     Name: 'PassCalcSettingsWidget',
@@ -94,94 +93,94 @@ const PassCalcSettingsWidget = new GObject.Class({
         
         recentIdRemove.connect('clicked', Lang.bind(this, this._onRecentIdRemove));
         
-        clipboardTimeoutEntry.set_value(this._settings.get_int(Config.SETTINGS_CLIPBOARD_TIMEOUT));
+        clipboardTimeoutEntry.set_value(this._settings.get_int(C.SETTINGS_CLIPBOARD_TIMEOUT));
         clipboardTimeoutEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this._settings.set_int(Config.SETTINGS_CLIPBOARD_TIMEOUT, clipboardTimeoutEntry.get_value_as_int());
+            this._settings.set_int(C.SETTINGS_CLIPBOARD_TIMEOUT, clipboardTimeoutEntry.get_value_as_int());
         }));
         
-        showCopyNotificationSwitch.set_active(this._settings.get_boolean(Config.SETTINGS_SHOW_NOTIFICATION));
+        showCopyNotificationSwitch.set_active(this._settings.get_boolean(C.SETTINGS_SHOW_NOTIFICATION));
         showCopyNotificationSwitch.connect('notify::active', Lang.bind(this, function(w) {
-            this._settings.set_boolean(Config.SETTINGS_SHOW_NOTIFICATION, w.active);
+            this._settings.set_boolean(C.SETTINGS_SHOW_NOTIFICATION, w.active);
         }));
         
-        maxRecentIdsEntry.set_value(this._settings.get_int(Config.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM));
+        maxRecentIdsEntry.set_value(this._settings.get_int(C.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM));
         maxRecentIdsEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this._settings.set_int(Config.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM, w.get_value_as_int());
+            this._settings.set_int(C.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM, w.get_value_as_int());
         }));      
         
-        passwordLengthEntry.set_value(this._settings.get_int(Config.SETTINGS_PASSWORD_LENGTH));
+        passwordLengthEntry.set_value(this._settings.get_int(C.SETTINGS_PASSWORD_LENGTH));
         passwordLengthEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this._settings.set_int(Config.SETTINGS_PASSWORD_LENGTH, w.get_value_as_int());
+            this._settings.set_int(C.SETTINGS_PASSWORD_LENGTH, w.get_value_as_int());
         }));
         
-        passwordSaltEntry.set_text(this._settings.get_string(Config.SETTINGS_PASSWORD_SALT));
+        passwordSaltEntry.set_text(this._settings.get_string(C.SETTINGS_PASSWORD_SALT));
         passwordSaltEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this._settings.set_string(Config.SETTINGS_PASSWORD_SALT, w.get_text());
+            this._settings.set_string(C.SETTINGS_PASSWORD_SALT, w.get_text());
         }));
         
         let iter = compMethodStore.append();
-        compMethodStore.set(iter, [ 0, 1 ], [ Enum.COMP_METHOD.CONCAT, _('String concatenation') ]);
+        compMethodStore.set(iter, [ 0, 1 ], [ E.COMP_METHOD.CONCAT, _('String concatenation') ]);
         let iter = compMethodStore.append();
-        compMethodStore.set(iter, [ 0, 1 ], [ Enum.COMP_METHOD.KDF, _('Key derivation function') ]);
+        compMethodStore.set(iter, [ 0, 1 ], [ E.COMP_METHOD.KDF, _('Key derivation function') ]);
         let renderer = new Gtk.CellRendererText();
         compMethodCombo.pack_start(renderer, true);
         compMethodCombo.add_attribute(renderer, 'text', 1);
-        compMethodCombo.set_active(this._settings.get_enum(Config.SETTINGS_COMP_METHOD) - 1);
+        compMethodCombo.set_active(this._settings.get_enum(C.SETTINGS_COMP_METHOD) - 1);
         compMethodCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)
                 return;
 
             let id = compMethodStore.get_value(iter, 0);
-            this._settings.set_enum(Config.SETTINGS_COMP_METHOD, id);
+            this._settings.set_enum(C.SETTINGS_COMP_METHOD, id);
         }));
 
         let iter = hashTypeStore.append();
-        hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA256, _('SHA-256') ]);
+        hashTypeStore.set(iter, [ 0, 1 ], [ E.HASH_TYPE.SHA256, _('SHA-256') ]);
         let iter = hashTypeStore.append();
-        hashTypeStore.set(iter, [ 0, 1 ], [ Enum.HASH_TYPE.SHA512, _('SHA-512') ]);
+        hashTypeStore.set(iter, [ 0, 1 ], [ E.HASH_TYPE.SHA512, _('SHA-512') ]);
         let renderer = new Gtk.CellRendererText();
         hashTypeCombo.pack_start(renderer, true);
         hashTypeCombo.add_attribute(renderer, 'text', 1);
-        hashTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_HASH_TYPE)-1);
+        hashTypeCombo.set_active(this._settings.get_enum(C.SETTINGS_HASH_TYPE)-1);
         hashTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)
                 return;
 
             let id = hashTypeStore.get_value(iter, 0);
-            this._settings.set_enum(Config.SETTINGS_HASH_TYPE, id);
+            this._settings.set_enum(C.SETTINGS_HASH_TYPE, id);
         }));
         
         let iter = kdfTypeStore.append();
-        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA256, _('HKDF (SHA-256)') ]);
+        kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA256, _('HKDF (SHA-256)') ]);
         let iter = kdfTypeStore.append();
-        kdfTypeStore.set(iter, [ 0, 1 ], [ Enum.KDF_TYPE.HKDF_SHA512, _('HKDF (SHA-512)') ]);
+        kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA512, _('HKDF (SHA-512)') ]);
         let renderer = new Gtk.CellRendererText();
         kdfTypeCombo.pack_start(renderer, true);
         kdfTypeCombo.add_attribute(renderer, 'text', 1);
-        kdfTypeCombo.set_active(this._settings.get_enum(Config.SETTINGS_KDF_TYPE)-1);
+        kdfTypeCombo.set_active(this._settings.get_enum(C.SETTINGS_KDF_TYPE)-1);
         kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success)
                 return;
 
             let id = kdfTypeStore.get_value(iter, 0);
-            this._settings.set_enum(Config.SETTINGS_KDF_TYPE, id);
+            this._settings.set_enum(C.SETTINGS_KDF_TYPE, id);
         }));
         
-        this._settings.bind(Config.SETTINGS_REMOVE_LOWER_ALPHA, removeLowerAlphaCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
-        this._settings.bind(Config.SETTINGS_REMOVE_UPPER_ALPHA, removeUpperAlphaCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
-        this._settings.bind(Config.SETTINGS_REMOVE_NUMERIC, removeNumericCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
-        this._settings.bind(Config.SETTINGS_REMOVE_SYMBOLS, removeSymbolsCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind(C.SETTINGS_REMOVE_LOWER_ALPHA, removeLowerAlphaCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind(C.SETTINGS_REMOVE_UPPER_ALPHA, removeUpperAlphaCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind(C.SETTINGS_REMOVE_NUMERIC, removeNumericCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind(C.SETTINGS_REMOVE_SYMBOLS, removeSymbolsCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
         
-        let recentIds = this._settings.get_strv(Config.SETTINGS_RECENT_IDENTIFIERS);
+        let recentIds = this._settings.get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
         this.updateRecentIdStore(recentIds);
         
         this._recentIdTreeview.connect('key-release-event', Lang.bind(this, this._onRecentIdKeypress));
         
         this._shortcutKeybindStoreIter = this._shortcutKeybindStore.append();
-        let accel = this._settings.get_strv(Config.SETTINGS_SHORTCUT_KEYBIND)[0];
+        let accel = this._settings.get_strv(C.SETTINGS_SHORTCUT_KEYBIND)[0];
         this.updateShortcutKeybindStore(accel);
         let renderer = new Gtk.CellRendererAccel({
             editable: true
@@ -223,7 +222,7 @@ const PassCalcSettingsWidget = new GObject.Class({
             }
             
             let id = entry.get_text();
-            this.addRecentId(id);
+            this.storeRecentDomain(id);
             
             dialog.destroy();
         }));
@@ -251,18 +250,18 @@ const PassCalcSettingsWidget = new GObject.Class({
     
     _onShortcutKeybindAccelCleared: function(renderer, path) {
         this.updateShortcutKeybindStore(null);
-        this._settings.set_strv(Config.SETTINGS_SHORTCUT_KEYBIND, [ ]);
+        this._settings.set_strv(C.SETTINGS_SHORTCUT_KEYBIND, [ ]);
     },
     
     _onShortcutKeybindAccelEdited: function(renderer, path, key, mods, hwcode) {
         let accel = Gtk.accelerator_name(key, mods);
         
         this.updateShortcutKeybindStore(accel);
-        this._settings.set_strv(Config.SETTINGS_SHORTCUT_KEYBIND, [ accel ]);
+        this._settings.set_strv(C.SETTINGS_SHORTCUT_KEYBIND, [ accel ]);
     },
     
     addRecentId: function(id) {
-        let current = this._settings.get_strv(Config.SETTINGS_RECENT_IDENTIFIERS);
+        let current = this._settings.get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
         let index = current.indexOf(id);
         
         if (index >= 0) {
@@ -270,17 +269,17 @@ const PassCalcSettingsWidget = new GObject.Class({
         }
         
         current.unshift(id);
-        this._settings.set_strv(Config.SETTINGS_RECENT_IDENTIFIERS, current);
+        this._settings.set_strv(C.SETTINGS_RECENT_IDENTIFIERS, current);
         this.updateRecentIdStore(current);
     },
     
     removeRecentId: function(id) {
-        let current = this._settings.get_strv(Config.SETTINGS_RECENT_IDENTIFIERS);
+        let current = this._settings.get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
         let index = current.indexOf(id);
         
         if (index >= 0) {
             current.splice(index, 1);
-            this._settings.set_strv(Config.SETTINGS_RECENT_IDENTIFIERS, current);
+            this._settings.set_strv(C.SETTINGS_RECENT_IDENTIFIERS, current);
             this.updateRecentIdStore(current);
         }
     },
