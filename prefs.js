@@ -227,11 +227,27 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._compMethodCombo.set_active(this.getSettings().get_enum(C.SETTINGS_COMP_METHOD) - 1);
         this._compMethodCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
-            if (!success)
+            if (!success) {
                 return;
+            }
 
             let id = this._compMethodStore.get_value(iter, 0);
             this.getSettings().set_enum(C.SETTINGS_COMP_METHOD, id);
+
+            switch (id) {
+                case E.COMP_METHOD.CONCAT:
+                    this._hashTypeCombo.set_sensitive(true);
+                    this._kdfTypeCombo.set_sensitive(false);
+                    break;
+                case E.COMP_METHOD.KDF:
+                    this._hashTypeCombo.set_sensitive(false);
+                    this._kdfTypeCombo.set_sensitive(true);
+                    break;
+                default:
+                    this._hashTypeCombo.set_sensitive(false);
+                    this._kdfTypeCombo.set_sensitive(false);
+                    break;
+            }
         }));
 
         // string concatenation hash type combobox
@@ -243,10 +259,12 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._hashTypeCombo.pack_start(renderer, true);
         this._hashTypeCombo.add_attribute(renderer, 'text', 1);
         this._hashTypeCombo.set_active(this.getSettings().get_enum(C.SETTINGS_HASH_TYPE)-1);
+        this._hashTypeCombo.set_sensitive((this.getSettings().get_enum(C.SETTINGS_COMP_METHOD) == E.COMP_METHOD.CONCAT));
         this._hashTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
-            if (!success)
+            if (!success) {
                 return;
+            }
 
             let id = this._hashTypeStore.get_value(iter, 0);
             this.getSettings().set_enum(C.SETTINGS_HASH_TYPE, id);
@@ -261,10 +279,12 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._kdfTypeCombo.pack_start(renderer, true);
         this._kdfTypeCombo.add_attribute(renderer, 'text', 1);
         this._kdfTypeCombo.set_active(this.getSettings().get_enum(C.SETTINGS_KDF_TYPE)-1);
+        this._kdfTypeCombo.set_sensitive((this.getSettings().get_enum(C.SETTINGS_COMP_METHOD) == E.COMP_METHOD.KDF));
         this._kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
-            if (!success)
+            if (!success) {
                 return;
+            }
 
             let id = this._kdfTypeStore.get_value(iter, 0);
             this.getSettings().set_enum(C.SETTINGS_KDF_TYPE, id);
