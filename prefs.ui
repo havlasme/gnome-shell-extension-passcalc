@@ -9,7 +9,7 @@
   <object class="GtkListStore" id="comp-method-store">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gchararray"/>
       <!-- column-name hash -->
       <column type="gchararray"/>
     </columns>
@@ -17,7 +17,7 @@
   <object class="GtkListStore" id="hash-type-store">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gchararray"/>
       <!-- column-name hash -->
       <column type="gchararray"/>
     </columns>
@@ -25,7 +25,7 @@
   <object class="GtkListStore" id="kdf-type-store">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gchararray"/>
       <!-- column-name hash -->
       <column type="gchararray"/>
     </columns>

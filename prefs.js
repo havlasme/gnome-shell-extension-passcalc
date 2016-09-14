@@ -241,7 +241,7 @@ const PassCalcPrefsWidget = new GObject.Class({
         let renderer = new Gtk.CellRendererText();
         this._compMethodCombo.pack_start(renderer, true);
         this._compMethodCombo.add_attribute(renderer, 'text', 1);
-        this._compMethodCombo.set_active(this.getSettings().get_enum(C.SETTINGS_COMP_METHOD) - 1);
+        this._compMethodCombo.set_active_id(this.getSettings().get_enum(C.SETTINGS_COMP_METHOD).toString());
         this._compMethodCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success) {
@@ -262,7 +262,7 @@ const PassCalcPrefsWidget = new GObject.Class({
         let renderer = new Gtk.CellRendererText();
         this._hashTypeCombo.pack_start(renderer, true);
         this._hashTypeCombo.add_attribute(renderer, 'text', 1);
-        this._hashTypeCombo.set_active(this.getSettings().get_enum(C.SETTINGS_HASH_TYPE)-1);
+        this._hashTypeCombo.set_active_id(this.getSettings().get_enum(C.SETTINGS_HASH_TYPE).toString());
         this._hashTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success) {
@@ -281,7 +281,7 @@ const PassCalcPrefsWidget = new GObject.Class({
         let renderer = new Gtk.CellRendererText();
         this._kdfTypeCombo.pack_start(renderer, true);
         this._kdfTypeCombo.add_attribute(renderer, 'text', 1);
-        this._kdfTypeCombo.set_active(this.getSettings().get_enum(C.SETTINGS_KDF_TYPE)-1);
+        this._kdfTypeCombo.set_active_id(this.getSettings().get_enum(C.SETTINGS_KDF_TYPE).toString());
         this._kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success) {
