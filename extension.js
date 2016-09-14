@@ -284,20 +284,36 @@ const PasswordCalculator = Lang.Class({
     },
 
     _filterPasswordCharacters: function(password) {
+        let charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        let allowed = charset;
+
         if (this.getSettings().get_boolean(C.SETTINGS_REMOVE_LOWER_ALPHA)) {
-            password = password.replace(/[a-z]+/g, '');
+            allowed = allowed.substr(0, allowed.indexOf("a")) + allowed.substr(allowed.indexOf("z")+1, allowed.length);
         }
         if (this.getSettings().get_boolean(C.SETTINGS_REMOVE_UPPER_ALPHA)) {
-            password = password.replace(/[A-Z]+/g, '');
+            allowed = allowed.substr(0, allowed.indexOf("A")) + allowed.substr(allowed.indexOf("Z")+1, allowed.length);
         }
         if (this.getSettings().get_boolean(C.SETTINGS_REMOVE_NUMERIC)) {
-            password = password.replace(/[0-9]+/g, '');
+            allowed = allowed.substr(0, allowed.indexOf("0")) + allowed.substr(allowed.indexOf("9")+1, allowed.length);
         }
         if (this.getSettings().get_boolean(C.SETTINGS_REMOVE_SYMBOLS)) {
-            password = password.replace(/\W+/g, '');
+            allowed = allowed.substr(0, allowed.indexOf("+")) + allowed.substr(allowed.indexOf("=")+1, allowed.length);
         }
 
-        return password;
+        if (allowed.length == charset.length) {
+            return password;
+        }
+
+        if (allowed.length < 4) {
+            return _('unavailable');
+        }
+
+        let translated = '';
+        for (let i=0; i<password.length; i++) {
+            translated += allowed[charset.indexOf(password[i])%allowed.length];
+        }
+
+        return translated;
     },
 
     _loadSettings: function() {
