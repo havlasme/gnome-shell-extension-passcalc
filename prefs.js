@@ -167,6 +167,23 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._shortcutKeybindStore.set(this._shortcutKeybindStoreIter, [ 0, 1 ], [ key, mods ]);
     },
 
+    _adjustControls: function() {
+        switch (this.getSettings().get_enum(C.SETTINGS_COMP_METHOD)) {
+            case E.COMP_METHOD.CONCAT:
+                this._hashTypeCombo.set_sensitive(true);
+                this._kdfTypeCombo.set_sensitive(false);
+                break;
+            case E.COMP_METHOD.KDF:
+                this._hashTypeCombo.set_sensitive(false);
+                this._kdfTypeCombo.set_sensitive(true);
+                break;
+            default:
+                this._hashTypeCombo.set_sensitive(false);
+                this._kdfTypeCombo.set_sensitive(false);
+                break;
+        }
+    },
+
     _buildWidget: function() {
         this.pack_start(this._mainBox, true, true, 0);
 
@@ -234,20 +251,7 @@ const PassCalcPrefsWidget = new GObject.Class({
             let id = this._compMethodStore.get_value(iter, 0);
             this.getSettings().set_enum(C.SETTINGS_COMP_METHOD, id);
 
-            switch (id) {
-                case E.COMP_METHOD.CONCAT:
-                    this._hashTypeCombo.set_sensitive(true);
-                    this._kdfTypeCombo.set_sensitive(false);
-                    break;
-                case E.COMP_METHOD.KDF:
-                    this._hashTypeCombo.set_sensitive(false);
-                    this._kdfTypeCombo.set_sensitive(true);
-                    break;
-                default:
-                    this._hashTypeCombo.set_sensitive(false);
-                    this._kdfTypeCombo.set_sensitive(false);
-                    break;
-            }
+            this._adjustControls();
         }));
 
         // string concatenation hash type combobox
@@ -259,7 +263,6 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._hashTypeCombo.pack_start(renderer, true);
         this._hashTypeCombo.add_attribute(renderer, 'text', 1);
         this._hashTypeCombo.set_active(this.getSettings().get_enum(C.SETTINGS_HASH_TYPE)-1);
-        this._hashTypeCombo.set_sensitive((this.getSettings().get_enum(C.SETTINGS_COMP_METHOD) == E.COMP_METHOD.CONCAT));
         this._hashTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success) {
@@ -279,7 +282,6 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._kdfTypeCombo.pack_start(renderer, true);
         this._kdfTypeCombo.add_attribute(renderer, 'text', 1);
         this._kdfTypeCombo.set_active(this.getSettings().get_enum(C.SETTINGS_KDF_TYPE)-1);
-        this._kdfTypeCombo.set_sensitive((this.getSettings().get_enum(C.SETTINGS_COMP_METHOD) == E.COMP_METHOD.KDF));
         this._kdfTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
             if (!success) {
@@ -313,6 +315,8 @@ const PassCalcPrefsWidget = new GObject.Class({
 
         // remove symbols checkbox
         this.getSettings().bind(C.SETTINGS_REMOVE_SYMBOLS, this._removeSymbolsCheck, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+        this._adjustControls();
     },
 
     _loadSettings: function() {
