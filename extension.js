@@ -155,7 +155,7 @@ const PasswordCalculator = Lang.Class({
     },
 
     storeRecentDomain: function(domain) {
-        let current = this.getSettings().get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
+        let current = this.getSettings().get_strv(C.SETTINGS_RECENT_DOMAINS);
 
         let index = current.indexOf(domain);
         if (index >= 0) {
@@ -163,15 +163,15 @@ const PasswordCalculator = Lang.Class({
         }
 
         current.unshift(domain);
-        this.getSettings().set_strv(C.SETTINGS_RECENT_IDENTIFIERS, current);
+        this.getSettings().set_strv(C.SETTINGS_RECENT_DOMAINS, current);
         this.updateRecentDomainList();
     },
 
     updateRecentDomainList: function() {
         this.recentDomainCombo.menu.removeAll();
         
-        let recent = this.getSettings().get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
-        let maxRecent = this.getSettings().get_int(C.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM);
+        let recent = this.getSettings().get_strv(C.SETTINGS_RECENT_DOMAINS);
+        let maxRecent = this.getSettings().get_int(C.SETTINGS_RECENT_DOMAINS_MAXIMUM);
 
         for (let i=0,l=recent.length; i<l&&(!maxRecent||i<maxRecent); i++) {
             let item = new RecentIdPopupMenuItem(recent[i]);

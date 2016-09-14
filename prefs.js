@@ -130,7 +130,7 @@ const PassCalcPrefsWidget = new GObject.Class({
     },
     
     addRecentDomain: function(domain) {
-        let current = this.getSettings().get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
+        let current = this.getSettings().get_strv(C.SETTINGS_RECENT_DOMAINS);
         let index = current.indexOf(domain);
         
         if (index >= 0) {
@@ -138,17 +138,17 @@ const PassCalcPrefsWidget = new GObject.Class({
         }
         
         current.unshift(domain);
-        this.getSettings().set_strv(C.SETTINGS_RECENT_IDENTIFIERS, current);
+        this.getSettings().set_strv(C.SETTINGS_RECENT_DOMAINS, current);
         this.updateRecentDomainStore(current);
     },
     
     removeRecentDomain: function(domain) {
-        let current = this.getSettings().get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
+        let current = this.getSettings().get_strv(C.SETTINGS_RECENT_DOMAINS);
         let index = current.indexOf(domain);
         
         if (index >= 0) {
             current.splice(index, 1);
-            this.getSettings().set_strv(C.SETTINGS_RECENT_IDENTIFIERS, current);
+            this.getSettings().set_strv(C.SETTINGS_RECENT_DOMAINS, current);
             this.updateRecentDomainStore(current);
         }
     },
@@ -171,7 +171,7 @@ const PassCalcPrefsWidget = new GObject.Class({
         this.pack_start(this._mainBox, true, true, 0);
 
         // recent domain treeview
-        let recentDomains = this.getSettings().get_strv(C.SETTINGS_RECENT_IDENTIFIERS);
+        let recentDomains = this.getSettings().get_strv(C.SETTINGS_RECENT_DOMAINS);
         this.updateRecentDomainStore(recentDomains);
         this._recentDomainTreeview.connect('key-release-event', Lang.bind(this, this.onRecentDomainKeypress));
 
@@ -198,9 +198,9 @@ const PassCalcPrefsWidget = new GObject.Class({
         }));
 
         // maximum recent domains entry
-        this._maxRecentDomainsEntry.set_value(this.getSettings().get_int(C.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM));
+        this._maxRecentDomainsEntry.set_value(this.getSettings().get_int(C.SETTINGS_RECENT_DOMAINS_MAXIMUM));
         this._maxRecentDomainsEntry.connect('notify::text', Lang.bind(this, function(w) {
-            this.getSettings().set_int(C.SETTINGS_RECENT_IDENTIFIERS_MAXIMUM, w.get_value_as_int());
+            this.getSettings().set_int(C.SETTINGS_RECENT_DOMAINS_MAXIMUM, w.get_value_as_int());
         }));
 
         // shortcut keybind entry
@@ -314,7 +314,7 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._shortcutKeybindStore = this._uiBuilder.get_object('shortcut-keybind-store');
         this._shortcutKeybindTreeview = this._uiBuilder.get_object('shortcut-keybind-treeview');
         this._clipboardTimeoutEntry = this._uiBuilder.get_object('clipboard-timeout-entry');
-        this._maxRecentDomainsEntry = this._uiBuilder.get_object('max-recent-ids-entry');
+        this._maxRecentDomainsEntry = this._uiBuilder.get_object('max-recent-domains-entry');
         this._compMethodStore = this._uiBuilder.get_object('comp-method-store');
         this._compMethodCombo = this._uiBuilder.get_object('comp-method-combo');
         this._hashTypeStore = this._uiBuilder.get_object('hash-type-store');
@@ -327,12 +327,12 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._removeUpperAlphaCheck = this._uiBuilder.get_object('remove-upper-alpha-check');
         this._removeNumericCheck = this._uiBuilder.get_object('remove-numeric-check');
         this._removeSymbolsCheck = this._uiBuilder.get_object('remove-symbols-check');
-        this._recentDomainStore = this._uiBuilder.get_object('recent-id-store');
-        this._recentDomainTreeview = this._uiBuilder.get_object('recent-id-treeview');
-        this._recentDomainTreeviewSelection = this._uiBuilder.get_object('recent-id-treeview-selection');
-        this._recentDomainTreeviewIdColumn = this._uiBuilder.get_object('recent-id-treeview-id-column');
-        this._recentDomainAdd = this._uiBuilder.get_object('recent-id-add');
-        this._recentDomainRemove = this._uiBuilder.get_object('recent-id-remove');
+        this._recentDomainStore = this._uiBuilder.get_object('recent-domains-store');
+        this._recentDomainTreeview = this._uiBuilder.get_object('recent-domains-treeview');
+        this._recentDomainTreeviewSelection = this._uiBuilder.get_object('recent-domains-treeview-selection');
+        this._recentDomainTreeviewIdColumn = this._uiBuilder.get_object('recent-domains-treeview-id-column');
+        this._recentDomainAdd = this._uiBuilder.get_object('recent-domains-add');
+        this._recentDomainRemove = this._uiBuilder.get_object('recent-domains-remove');
     }
 });
 

@@ -30,7 +30,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkAdjustment" id="max-recent-ids-adjustment">
+  <object class="GtkAdjustment" id="max-recent-domains-adjustment">
     <property name="upper">1000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -39,7 +39,7 @@
     <property name="upper">1000</property>
     <property name="step_increment">1</property>
   </object>
-  <object class="GtkListStore" id="recent-id-store">
+  <object class="GtkListStore" id="recent-domains-store">
     <columns>
       <!-- column-name id -->
       <column type="gchararray"/>
@@ -57,29 +57,29 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkBox" id="recent-id-box">
+      <object class="GtkBox" id="recent-domains-box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkScrolledWindow" id="recent-id-scrolled">
+          <object class="GtkScrolledWindow" id="recent-domains-scrolled">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <property name="min_content_width">150</property>
             <child>
-              <object class="GtkTreeView" id="recent-id-treeview">
+              <object class="GtkTreeView" id="recent-domains-treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="model">recent-id-store</property>
+                <property name="model">recent-domains-store</property>
                 <property name="search_column">0</property>
                 <property name="show_expanders">False</property>
                 <child internal-child="selection">
-                  <object class="GtkTreeSelection" id="recent-id-treeview-selection"/>
+                  <object class="GtkTreeSelection" id="recent-domains-treeview-selection"/>
                 </child>
                 <child>
-                  <object class="GtkTreeViewColumn" id="recent-id-treeview-id-column">
+                  <object class="GtkTreeViewColumn" id="recent-domains-treeview-id-column">
                     <property name="title" translatable="yes">Recent domains</property>
                     <property name="clickable">True</property>
                     <property name="reorderable">True</property>
@@ -97,13 +97,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="recent-id-toolbar">
+          <object class="GtkToolbar" id="recent-domains-toolbar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="toolbar_style">icons</property>
             <property name="icon_size">2</property>
             <child>
-              <object class="GtkToolButton" id="recent-id-add">
+              <object class="GtkToolButton" id="recent-domains-add">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Add</property>
@@ -115,7 +115,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="recent-id-remove">
+              <object class="GtkToolButton" id="recent-domains-remove">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Remove</property>
@@ -245,13 +245,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="max-recent-ids-box">
+          <object class="GtkBox" id="max-recent-domains-box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">5</property>
             <property name="margin_right">5</property>
             <child>
-              <object class="GtkLabel" id="max-recent-ids-label">
+              <object class="GtkLabel" id="max-recent-domains-label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_right">10</property>
@@ -264,10 +264,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="max-recent-ids-entry">
+              <object class="GtkSpinButton" id="max-recent-domains-entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">max-recent-ids-adjustment</property>
+                <property name="adjustment">max-recent-domains-adjustment</property>
                 <property name="numeric">True</property>
                 <property name="update_policy">if-valid</property>
               </object>

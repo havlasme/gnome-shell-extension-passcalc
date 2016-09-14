@@ -37,13 +37,13 @@
       <default>''</default>
       <summary>Password salt</summary>
     </key>
-    <key type="as" name="recent-identifiers">
+    <key type="as" name="recent-domains">
       <default><![CDATA[[ ]]]></default>
-      <summary>Recent identifiers</summary>
+      <summary>Recent domains</summary>
     </key>
-    <key type="i" name="recent-identifiers-maximum">
+    <key type="i" name="recent-domains-maximum">
       <default>15</default>
-      <summary>Maximum number of shown recent identifiers</summary>
+      <summary>Maximum number of shown recent domains</summary>
     </key>
     <key type="b" name="remove-lower-alpha">
       <default>false</default>
