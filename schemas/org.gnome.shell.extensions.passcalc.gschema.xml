@@ -1,72 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gnome-shell-extension-passcalc">
-  <enum id="org.gnome.shell.extensions.passcalc.comp-type">
-    <value value="1" nick="String concatenation (Deprecated)" />
+  <enum id="org.gnome.shell.extensions.passcalc.comp-method">
+    <value value="1" nick="String concatenation" />
     <value value="2" nick="Key derivation function" />
   </enum>
   <enum id="org.gnome.shell.extensions.passcalc.hash-type">
-    <value value="1" nick="SHA-1" />
-    <value value="2" nick="SHA-224" />
     <value value="3" nick="SHA-256" />
-    <value value="4" nick="SHA-384" />
     <value value="5" nick="SHA-512" />
   </enum>
   <enum id="org.gnome.shell.extensions.passcalc.kdf-type">
-    <value value="1" nick="HKDF SHA-256" />
-    <value value="2" nick="HKDF SHA-512" />
+    <value value="1" nick="HKDF-SHA256" />
+    <value value="2" nick="HKDF-SHA512" />
+    <value value="3" nick="PBKDF2-HMAC-SHA256" />
   </enum>
   <schema path="/org/gnome/shell/extensions/passcalc/" id="org.gnome.shell.extensions.passcalc">
-    <key type="b" name="copy-to-clipboard">
-      <default>true</default>
-      <summary>Copy to Clipboard</summary>
-    </key>
     <key type="i" name="clipboard-timeout">
       <default>5000</default>
       <summary>Clipboard Timeout</summary>
-    </key>    
-    <key name="comp-type" enum="org.gnome.shell.extensions.passcalc.comp-type">
-      <default>'String concatenation (Deprecated)'</default>
-      <summary>Password Computation Type</summary>
+    </key>
+    <key name="comp-method" enum="org.gnome.shell.extensions.passcalc.comp-method">
+      <default>'String concatenation'</default>
+      <summary>Password computation type</summary>
     </key>
     <key name="hash-type" enum="org.gnome.shell.extensions.passcalc.hash-type">
       <default>'SHA-512'</default>
-      <summary>Hash Type</summary>
+      <summary>Hash type</summary>
     </key>
     <key name="kdf-type" enum="org.gnome.shell.extensions.passcalc.kdf-type">
-      <default>'HKDF SHA-512'</default>
-      <summary>Key Derivation Function Type</summary>
+      <default>'HKDF-SHA512'</default>
+      <summary>Key derivation function</summary>
     </key>
     <key type="i" name="password-length">
       <default>15</default>
-      <summary>Password Length</summary>
+      <summary>Password length</summary>
     </key>
     <key type="s" name="password-salt">
       <default>''</default>
-      <summary>Password Salt</summary>
+      <summary>Password salt</summary>
     </key>
-    <key type="as" name="recent-identifiers">
+    <key type="as" name="recent-domains">
       <default><![CDATA[[ ]]]></default>
-      <summary>Recent Identifiers</summary>
+      <summary>Recent domains</summary>
     </key>
-    <key type="i" name="recent-identifiers-maximum">
+    <key type="i" name="recent-domains-maximum">
       <default>15</default>
-      <summary>Maximum of Shown Recent Identifiers</summary>
+      <summary>Maximum number of shown recent domains</summary>
     </key>
     <key type="b" name="remove-lower-alpha">
       <default>false</default>
-      <summary>Remove Lower Alpha</summary>
+      <summary>Remove lower alphabetical characters from computed password</summary>
     </key>
     <key type="b" name="remove-upper-alpha">
       <default>false</default>
-      <summary>Remove Upper Alpha</summary>
+      <summary>Remove upper alphabetical characters from computed password</summary>
     </key>
     <key type="b" name="remove-numeric">
       <default>false</default>
-      <summary>Remove Numeric</summary>
+      <summary>Remove numeric charactes from computed password</summary>
     </key>
     <key type="b" name="remove-symbols">
       <default>false</default>
-      <summary>Remove Symbols</summary>
+      <summary>Remove special symbols from computed password</summary>
     </key>
     <key name="shortcut-keybind" type="as">
       <default><![CDATA[['F12']]]></default>
@@ -74,7 +68,7 @@
     </key>
     <key type="b" name="show-notification">
       <default>true</default>
-      <summary>Show Copy Notification</summary>
+      <summary>Show copy notification</summary>
     </key>
   </schema>
 </schemalist>

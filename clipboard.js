@@ -16,12 +16,7 @@
 **/
 
 const St = imports.gi.St;
-
 const Clipboard = St.Clipboard.get_default();
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Config = Me.imports.config;
-const Convenience = Me.imports.convenience;
 
 const CLIPBOARD_TYPE = St.ClipboardType.CLIPBOARD;
 

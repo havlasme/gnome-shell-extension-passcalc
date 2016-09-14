@@ -6,10 +6,10 @@
     <property name="upper">60000</property>
     <property name="step_increment">500</property>
   </object>
-  <object class="GtkListStore" id="comp-type-store">
+  <object class="GtkListStore" id="comp-method-store">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gchararray"/>
       <!-- column-name hash -->
       <column type="gchararray"/>
     </columns>
@@ -17,7 +17,7 @@
   <object class="GtkListStore" id="hash-type-store">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gchararray"/>
       <!-- column-name hash -->
       <column type="gchararray"/>
     </columns>
@@ -25,12 +25,12 @@
   <object class="GtkListStore" id="kdf-type-store">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gchararray"/>
       <!-- column-name hash -->
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkAdjustment" id="max-recent-ids-adjustment">
+  <object class="GtkAdjustment" id="max-recent-domains-adjustment">
     <property name="upper">1000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -39,7 +39,7 @@
     <property name="upper">1000</property>
     <property name="step_increment">1</property>
   </object>
-  <object class="GtkListStore" id="recent-id-store">
+  <object class="GtkListStore" id="recent-domains-store">
     <columns>
       <!-- column-name id -->
       <column type="gchararray"/>
@@ -57,30 +57,30 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkBox" id="recent-id-box">
+      <object class="GtkBox" id="recent-domains-box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkScrolledWindow" id="recent-id-scrolled">
+          <object class="GtkScrolledWindow" id="recent-domains-scrolled">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <property name="min_content_width">150</property>
             <child>
-              <object class="GtkTreeView" id="recent-id-treeview">
+              <object class="GtkTreeView" id="recent-domains-treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="model">recent-id-store</property>
+                <property name="model">recent-domains-store</property>
                 <property name="search_column">0</property>
                 <property name="show_expanders">False</property>
                 <child internal-child="selection">
-                  <object class="GtkTreeSelection" id="recent-id-treeview-selection"/>
+                  <object class="GtkTreeSelection" id="recent-domains-treeview-selection"/>
                 </child>
                 <child>
-                  <object class="GtkTreeViewColumn" id="recent-id-treeview-id-column">
-                    <property name="title" translatable="yes">Recent identifiers</property>
+                  <object class="GtkTreeViewColumn" id="recent-domains-treeview-id-column">
+                    <property name="title" translatable="yes">Recent domains</property>
                     <property name="clickable">True</property>
                     <property name="reorderable">True</property>
                     <property name="sort_indicator">True</property>
@@ -97,13 +97,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="recent-id-toolbar">
+          <object class="GtkToolbar" id="recent-domains-toolbar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="toolbar_style">icons</property>
             <property name="icon_size">2</property>
             <child>
-              <object class="GtkToolButton" id="recent-id-add">
+              <object class="GtkToolButton" id="recent-domains-add">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Add</property>
@@ -115,7 +115,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="recent-id-remove">
+              <object class="GtkToolButton" id="recent-domains-remove">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Remove</property>
@@ -166,86 +166,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="copy-to-clipboard-box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <child>
-              <object class="GtkLabel" id="copy-to-clipboard-label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">baseline</property>
-                <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Copy to clipboard</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="copy-to-clipboard-switch">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="clipboard-timeout-box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <child>
-              <object class="GtkLabel" id="clipboard-timeout-label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Clipboard timeout (milisends)</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="clipboard-timeout-entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="adjustment">clipboard-timeout-adjustment</property>
-                <property name="numeric">True</property>
-                <property name="update_policy">if-valid</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox" id="show-copy-notification-box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -280,21 +200,21 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="max-recent-ids-box">
+          <object class="GtkBox" id="clipboard-timeout-box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">5</property>
             <property name="margin_right">5</property>
             <child>
-              <object class="GtkLabel" id="max-recent-ids-label">
+              <object class="GtkLabel" id="clipboard-timeout-label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Maximum recent identifiers</property>
+                <property name="label" translatable="yes">Clipboard timeout (miliseconds)</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -303,10 +223,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="max-recent-ids-entry">
+              <object class="GtkSpinButton" id="clipboard-timeout-entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">max-recent-ids-adjustment</property>
+                <property name="adjustment">clipboard-timeout-adjustment</property>
                 <property name="numeric">True</property>
                 <property name="update_policy">if-valid</property>
               </object>
@@ -321,7 +241,48 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">4</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="max-recent-domains-box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <child>
+              <object class="GtkLabel" id="max-recent-domains-label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_right">10</property>
+                <property name="label" translatable="yes">Maximum recent domains</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="max-recent-domains-entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="adjustment">max-recent-domains-adjustment</property>
+                <property name="numeric">True</property>
+                <property name="update_policy">if-valid</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -376,7 +337,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
@@ -392,21 +353,21 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">6</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="password-length-box">
+          <object class="GtkBox" id="comp-method-box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">5</property>
             <property name="margin_right">5</property>
             <child>
-              <object class="GtkLabel" id="password-length-label">
+              <object class="GtkLabel" id="comp-method-label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Password length</property>
+                <property name="label" translatable="yes">Computation method</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -415,87 +376,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="password-length-entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="adjustment">password-length-adjustment</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="password-salt-box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <child>
-              <object class="GtkLabel" id="password-salt-label">
+              <object class="GtkComboBox" id="comp-method-combo">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Password salt</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="password-salt-entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">8</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="comp-type-box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <child>
-              <object class="GtkLabel" id="comp-type-label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Password computation method</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBox" id="comp-type-combo">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="model">comp-type-store</property>
+                <property name="model">comp-method-store</property>
                 <property name="id_column">0</property>
               </object>
               <packing>
@@ -509,7 +393,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">9</property>
+            <property name="position">6</property>
           </packing>
         </child>
         <child>
@@ -523,7 +407,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_right">10</property>
-                <property name="label" translatable="yes">Hash type</property>
+                <property name="label" translatable="yes">String concatenation hash type</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -549,7 +433,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">10</property>
+            <property name="position">7</property>
           </packing>
         </child>
         <child>
@@ -589,9 +473,88 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">11</property>
+            <property name="position">8</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkBox" id="password-length-box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <child>
+              <object class="GtkLabel" id="password-length-label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_right">10</property>
+                <property name="label" translatable="yes">Length</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="password-length-entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="adjustment">password-length-adjustment</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">9</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="password-salt-box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <child>
+              <object class="GtkLabel" id="password-salt-label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_right">10</property>
+                <property name="label" translatable="yes">Salt</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="password-salt-entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">10</property>
+          </packing>
+        </child>
+
+
         <child>
           <object class="GtkLabel" id="filter-characters-in-password-label">
             <property name="visible">True</property>
@@ -605,12 +568,29 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">12</property>
+            <property name="position">11</property>
           </packing>
         </child>
         <child>
           <object class="GtkCheckButton" id="remove-lower-alpha-check">
-            <property name="label" translatable="yes">Remove lower alpha</property>
+            <property name="label" translatable="yes">Remove lower-case alphabetical characters [a-z]</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">12</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="remove-upper-alpha-check">
+            <property name="label" translatable="yes">Remove upper-case alphabetical characters [A-Z]</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -626,8 +606,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="remove-upper-alpha-check">
-            <property name="label" translatable="yes">Remove upper alpha</property>
+          <object class="GtkCheckButton" id="remove-numeric-check">
+            <property name="label" translatable="yes">Remove numeric characters [0-9]</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -643,8 +623,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="remove-numeric-check">
-            <property name="label" translatable="yes">Remove numbers</property>
+          <object class="GtkCheckButton" id="remove-symbols-check">
+            <property name="label" translatable="yes">Remove special symbols [+/=]</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -657,23 +637,6 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">15</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCheckButton" id="remove-symbols-check">
-            <property name="label" translatable="yes">Remove symbols</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">16</property>
           </packing>
         </child>
       </object>

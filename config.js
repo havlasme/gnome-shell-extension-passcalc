@@ -15,15 +15,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-const SETTINGS_COPY_TO_CLIPBOARD = 'copy-to-clipboard';
 const SETTINGS_CLIPBOARD_TIMEOUT = 'clipboard-timeout';
-const SETTINGS_COMP_TYPE = 'comp-type';
+const SETTINGS_COMP_METHOD = 'comp-method';
 const SETTINGS_HASH_TYPE = 'hash-type';
 const SETTINGS_KDF_TYPE = 'kdf-type';
 const SETTINGS_PASSWORD_LENGTH = 'password-length';
 const SETTINGS_PASSWORD_SALT = 'password-salt';
-const SETTINGS_RECENT_IDENTIFIERS = 'recent-identifiers';
-const SETTINGS_RECENT_IDENTIFIERS_MAXIMUM = 'recent-identifiers-maximum';
+const SETTINGS_RECENT_DOMAINS = 'recent-domains';
+const SETTINGS_RECENT_DOMAINS_MAXIMUM = 'recent-domains-maximum';
 const SETTINGS_REMOVE_LOWER_ALPHA = 'remove-lower-alpha';
 const SETTINGS_REMOVE_UPPER_ALPHA = 'remove-upper-alpha';
 const SETTINGS_REMOVE_NUMERIC = 'remove-numeric';

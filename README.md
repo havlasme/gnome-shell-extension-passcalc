@@ -2,23 +2,23 @@
 
 PassCalc extension for Gnome Shell
 
-This extension calculates strong unique passwords for each identifier and passphrase combination.
+This extension computes strong unique passwords for each domain and passphrase combination.
 
 ## Features
 
-- support to control length of calculated password
-- multiple hash functions used to calculate password 
-- support for optional hash salt
-- support for limiting character groups (lower alpha/upper alpha/numbers/symbols) in calculated password
-- quickly accessible recently used identifiers in drop-down menu
-- support for activation with keyboard shortcut
-- support for clearing password from clipboard after specified timeout
-- support for key derivation function (HKDF) as possibly safer alternative to simple string concatenation formula described below
+- activation with keyboard shortcut
+- control length of computed password
+- quickly accessible recently used domains in drop-down menu
+- multiple hash functions (SHA-256 / SHA-512) used to compute password
+- key derivation function (HKDF / PBKDF2) as possibly safer alternative to simple string concatenation formula described below
+- hash salt support
+- filtering character groups (lower-case alpha / upper-case alpha / numbers / special symbols) in computed password
+- clearing password from clipboard after specified time
 
 ## Password calculation formula
 
-The formula used to calculate password is as simple as 
-"[identifier][passphrase][salt]" -> SHA1/SHA-224/SHA-256/SHA-384/SHA-512 -> BASE64
+The formula used to compute password is as simple as
+"[identifier][passphrase][salt]" -> SHA-256/SHA-512 -> BASE64
 
 ## Installation
 

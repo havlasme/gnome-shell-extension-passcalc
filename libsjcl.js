@@ -75,14 +75,31 @@ b+'":';d=",";switch(typeof a[b]){case "number":case "boolean":c+=a[b];break;case
 null!=d[3]?b[d[2]]=parseInt(d[3],10):null!=d[4]?b[d[2]]=d[2].match(/^(ct|adata|salt|iv)$/)?sjcl.codec.base64.toBits(d[4]):unescape(d[4]):null!=d[5]&&(b[d[2]]="true"===d[5])}return b},g:function(a,b,c){void 0===a&&(a={});if(void 0===b)return a;for(var d in b)if(b.hasOwnProperty(d)){if(c&&void 0!==a[d]&&a[d]!==b[d])throw new sjcl.exception.invalid("required parameter overridden");a[d]=b[d]}return a},sa:function(a,b){var c={},d;for(d in a)a.hasOwnProperty(d)&&a[d]!==b[d]&&(c[d]=a[d]);return c},ra:function(a,
 b){var c={},d;for(d=0;d<b.length;d++)void 0!==a[b[d]]&&(c[b[d]]=a[b[d]]);return c}};sjcl.encrypt=sjcl.json.encrypt;sjcl.decrypt=sjcl.json.decrypt;sjcl.misc.pa={};sjcl.misc.cachedPbkdf2=function(a,b){var c=sjcl.misc.pa,d;b=b||{};d=b.iter||1E3;c=c[a]=c[a]||{};d=c[d]=c[d]||{firstSalt:b.salt&&b.salt.length?b.salt.slice(0):sjcl.random.randomWords(2,0)};c=void 0===b.salt?d.firstSalt:b.salt;d[c]=d[c]||sjcl.misc.pbkdf2(a,c,b.iter);return{key:d[c].slice(0),salt:c.slice(0)}};
 "undefined"!==typeof module&&module.exports&&(module.exports=sjcl);"function"===typeof define&&define([],function(){return sjcl});
-sjcl.misc.hkdf=function(a,b,c,d,e){var f,g,h,i,j,k,l=[];if(e=e||sjcl.hash.sha256,"string"==typeof d&&(d=sjcl.codec.utf8String.toBits(d)),"string"==typeof c?c=sjcl.codec.utf8String.toBits(c):c||(c=[]),f=new sjcl.misc.hmac(c,e),g=f.mac(a),i=sjcl.bitArray.bitLength(g),j=Math.ceil(b/i),j>255)throw new sjcl.exception.invalid("key bit length is too large for hkdf");for(f=new sjcl.misc.hmac(g,e),k=[],h=1;h<=j;h++)f.update(k),f.update(d),f.update([sjcl.bitArray.partial(8,h)]),k=f.digest(),l=sjcl.bitArray.concat(l,k);return sjcl.bitArray.clamp(l,b)};
 sjcl.hash.sha512=function(a){this._key[0]||this._precompute(),a?(this._h=a._h.slice(0),this._buffer=a._buffer.slice(0),this._length=a._length):this.reset()},sjcl.hash.sha512.hash=function(a){return(new sjcl.hash.sha512).update(a).finalize()},sjcl.hash.sha512.prototype={blockSize:1024,reset:function(){return this._h=this._init.slice(0),this._buffer=[],this._length=0,this},update:function(a){"string"==typeof a&&(a=sjcl.codec.utf8String.toBits(a));var b,c=this._buffer=sjcl.bitArray.concat(this._buffer,a),d=this._length,e=this._length=d+sjcl.bitArray.bitLength(a);if(e>9007199254740991)throw new sjcl.exception.invalid("Cannot hash more than 2^53 - 1 bits");if("undefined"!=typeof Uint32Array){var f=new Uint32Array(c),g=0;for(b=1024+d-(1024+d&1023);b<=e;b+=1024)this._block(f.subarray(32*g,32*(g+1))),g+=1;c.splice(0,32*g)}else for(b=1024+d-(1024+d&1023);b<=e;b+=1024)this._block(c.splice(0,32));return this},finalize:function(){var a,b=this._buffer,c=this._h;for(b=sjcl.bitArray.concat(b,[sjcl.bitArray.partial(1,1)]),a=b.length+4;31&a;a++)b.push(0);for(b.push(0),b.push(0),b.push(Math.floor(this._length/4294967296)),b.push(0|this._length);b.length;)this._block(b.splice(0,32));return this.reset(),c},_init:[],_initr:[12372232,13281083,9762859,1914609,15106769,4090911,4308331,8266105],_key:[],_keyr:[2666018,15689165,5061423,9034684,4764984,380953,1658779,7176472,197186,7368638,14987916,16757986,8096111,1480369,13046325,6891156,15813330,5187043,9229749,11312229,2818677,10937475,4324308,1135541,6741931,11809296,16458047,15666916,11046850,698149,229999,945776,13774844,2541862,12856045,9810911,11494366,7844520,15576806,8533307,15795044,4337665,16291729,5553712,15684120,6662416,7413802,12308920,13816008,4303699,9366425,10176680,13195875,4295371,6546291,11712675,15708924,1519456,15772530,6568428,6495784,8568297,13007125,7492395,2515356,12632583,14740254,7262584,1535930,13146278,16321966,1853211,294276,13051027,13221564,1051980,4080310,6651434,14088940,4675607],_precompute:function(){function e(a){return 4294967296*(a-Math.floor(a))|0}function f(a){return 1099511627776*(a-Math.floor(a))&255}for(var c,d,a=0,b=2;a<80;b++){for(d=!0,c=2;c*c<=b;c++)if(b%c===0){d=!1;break}d&&(a<8&&(this._init[2*a]=e(Math.pow(b,.5)),this._init[2*a+1]=f(Math.pow(b,.5))<<24|this._initr[a]),this._key[2*a]=e(Math.pow(b,1/3)),this._key[2*a+1]=f(Math.pow(b,1/3))<<24|this._keyr[a],a++)}},_block:function(a){var b,c,d,w,e=this._h,f=this._key,g=e[0],h=e[1],i=e[2],j=e[3],k=e[4],l=e[5],m=e[6],n=e[7],o=e[8],p=e[9],q=e[10],r=e[11],s=e[12],t=e[13],u=e[14],v=e[15];if("undefined"!=typeof Uint32Array){w=Array(160);for(var x=0;x<32;x++)w[x]=a[x]}else w=a;var y=g,z=h,A=i,B=j,C=k,D=l,E=m,F=n,G=o,H=p,I=q,J=r,K=s,L=t,M=u,N=v;for(b=0;b<80;b++){if(b<16)c=w[2*b],d=w[2*b+1];else{var O=w[2*(b-15)],P=w[2*(b-15)+1],Q=(P<<31|O>>>1)^(P<<24|O>>>8)^O>>>7,R=(O<<31|P>>>1)^(O<<24|P>>>8)^(O<<25|P>>>7),S=w[2*(b-2)],T=w[2*(b-2)+1],U=(T<<13|S>>>19)^(S<<3|T>>>29)^S>>>6,V=(S<<13|T>>>19)^(T<<3|S>>>29)^(S<<26|T>>>6),W=w[2*(b-7)],X=w[2*(b-7)+1],Y=w[2*(b-16)],Z=w[2*(b-16)+1];d=R+X,c=Q+W+(d>>>0<R>>>0?1:0),d+=V,c+=U+(d>>>0<V>>>0?1:0),d+=Z,c+=Y+(d>>>0<Z>>>0?1:0)}w[2*b]=c|=0,w[2*b+1]=d|=0;var $=G&I^~G&K,_=H&J^~H&L,aa=y&A^y&C^A&C,ba=z&B^z&D^B&D,ca=(z<<4|y>>>28)^(y<<30|z>>>2)^(y<<25|z>>>7),da=(y<<4|z>>>28)^(z<<30|y>>>2)^(z<<25|y>>>7),ea=(H<<18|G>>>14)^(H<<14|G>>>18)^(G<<23|H>>>9),fa=(G<<18|H>>>14)^(G<<14|H>>>18)^(H<<23|G>>>9),ga=f[2*b],ha=f[2*b+1],ia=N+fa,ja=M+ea+(ia>>>0<N>>>0?1:0);ia+=_,ja+=$+(ia>>>0<_>>>0?1:0),ia+=ha,ja+=ga+(ia>>>0<ha>>>0?1:0),ia=ia+d|0,ja+=c+(ia>>>0<d>>>0?1:0);var ka=da+ba,la=ca+aa+(ka>>>0<da>>>0?1:0);M=K,N=L,K=I,L=J,I=G,J=H,H=F+ia|0,G=E+ja+(H>>>0<F>>>0?1:0)|0,E=C,F=D,C=A,D=B,A=y,B=z,z=ia+ka|0,y=ja+la+(z>>>0<ia>>>0?1:0)|0}h=e[1]=h+z|0,e[0]=g+y+(h>>>0<z>>>0?1:0)|0,j=e[3]=j+B|0,e[2]=i+A+(j>>>0<B>>>0?1:0)|0,l=e[5]=l+D|0,e[4]=k+C+(l>>>0<D>>>0?1:0)|0,n=e[7]=n+F|0,e[6]=m+E+(n>>>0<F>>>0?1:0)|0,p=e[9]=p+H|0,e[8]=o+G+(p>>>0<H>>>0?1:0)|0,r=e[11]=r+J|0,e[10]=q+I+(r>>>0<J>>>0?1:0)|0,t=e[13]=t+L|0,e[12]=s+K+(t>>>0<L>>>0?1:0)|0,v=e[15]=v+N|0,e[14]=u+M+(v>>>0<N>>>0?1:0)|0}};
+sjcl.misc.hkdf=function(a,b,c,d,e){var f,g,h,i,j,k,l=[];if(e=e||sjcl.hash.sha256,"string"==typeof d&&(d=sjcl.codec.utf8String.toBits(d)),"string"==typeof c?c=sjcl.codec.utf8String.toBits(c):c||(c=[]),f=new sjcl.misc.hmac(c,e),g=f.mac(a),i=sjcl.bitArray.bitLength(g),j=Math.ceil(b/i),j>255)throw new sjcl.exception.invalid("key bit length is too large for hkdf");for(f=new sjcl.misc.hmac(g,e),k=[],h=1;h<=j;h++)f.update(k),f.update(d),f.update([sjcl.bitArray.partial(8,h)]),k=f.digest(),l=sjcl.bitArray.concat(l,k);return sjcl.bitArray.clamp(l,b)};
+sjcl.misc.pbkdf2=function(a,b,c,d,e){if(c=c||1e4,d<0||c<0)throw new sjcl.exception.invalid("invalid params to pbkdf2");"string"==typeof a&&(a=sjcl.codec.utf8String.toBits(a)),"string"==typeof b&&(b=sjcl.codec.utf8String.toBits(b)),e=e||sjcl.misc.hmac;var g,h,i,j,k,f=new e(a),l=[],m=sjcl.bitArray;for(k=1;32*l.length<(d||1);k++){for(g=h=f.encrypt(m.concat(b,[k])),i=1;i<c;i++)for(h=f.encrypt(h),j=0;j<h.length;j++)g[j]^=h[j];l=l.concat(g)}return d&&(l=m.clamp(l,d)),l};
 
-var hkdf = {
-    sha256: function(domain, passphrase, salt, length) {
-        return sjcl.codec.base64.fromBits(sjcl.misc.hkdf(passphrase, length, salt, domain));
-    },
-    sha512: function(domain, passphrase, salt, length) {
-        return sjcl.codec.base64.fromBits(sjcl.misc.hkdf(passphrase, length, salt, domain, sjcl.hash.sha512));
-    }
-}
+const PASSWORD_CHAR_BITLENGTH = 6;
+const PBKDF2_ITERATIONS = 1000;
+
+const hash = {};
+const hkdf = {};
+const pbkdf2 = {};
+
+hash.sha256 = function(string) {
+    return sjcl.codec.base64.fromBits(sjcl.hash.sha256.hash(string));
+};
+hash.sha512 = function(string) {
+    return sjcl.codec.base64.fromBits(sjcl.hash.sha512.hash(string));
+};
+
+hkdf.sha256 = function(domain, passphrase, salt, length) {
+    return sjcl.codec.base64.fromBits(sjcl.misc.hkdf(passphrase, length*PASSWORD_CHAR_BITLENGTH, salt, domain));
+};
+hkdf.sha512 = function(domain, passphrase, salt, length) {
+    return sjcl.codec.base64.fromBits(sjcl.misc.hkdf(passphrase, length*PASSWORD_CHAR_BITLENGTH, salt, domain, sjcl.hash.sha512));
+};
+
+pbkdf2.sha256 = function(domain, passphrase, salt, length) {
+    return sjcl.codec.base64.fromBits(sjcl.misc.pbkdf2(passphrase, domain+salt, PBKDF2_ITERATIONS, length*PASSWORD_CHAR_BITLENGTH));
+};
