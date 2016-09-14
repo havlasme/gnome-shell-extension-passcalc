@@ -80,8 +80,8 @@ sjcl.hash.sha512=function(a){this._key[0]||this._precompute(),a?(this._h=a._h.sl
 
 const PASSWORD_CHAR_BITLENGTH = 6;
 
-var hash = {};
-var hkdf = {};
+const hash = {};
+const hkdf = {};
 
 hash.sha256 = function(string) {
     return sjcl.codec.base64.fromBits(sjcl.hash.sha256.hash(string));
