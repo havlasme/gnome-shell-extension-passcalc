@@ -33,11 +33,11 @@ const C = Me.imports.config;
 const E = Me.imports.enum;
 
 const PassCalcPrefsWidget = new GObject.Class({
-    UI_FILE: '/prefs.ui',
-
     Name: 'PassCalcPrefsWidget',
     GTypeName: 'PassCalcPrefsWidget',
     Extends: Gtk.Box,
+
+    UI_FILE: '/ui/prefs.gtkbuilder',
     
     _init: function(params) {
         this.parent(params);
@@ -56,43 +56,43 @@ const PassCalcPrefsWidget = new GObject.Class({
     },
 
     onRecentDomainAdd: function() {
-        let dialog = new Gtk.Dialog({
+        let recentDomainDialog = new Gtk.Dialog({
             title: _('Add recent domain'),
-            transient_for: this.get_toplevel(),
             modal: true,
-            resizable: false
+            resizable: false,
+            transient_for: this.get_toplevel()
         });
 
-        // cancel button
-        let btn = dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
-
         // ok button
-        let btn = dialog.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK);
-        btn.set_can_default(true);
-        btn.sensitive = false;
-        dialog.set_default(btn);
+        let okButton = recentDomainDialog.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK);
+        okButton.set_can_default(true);
+        okButton.sensitive = false;
+        recentDomainDialog.set_default(okButton);
+
+        // cancel button
+        let cancelButton = recentDomainDialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
         
         // domain entry
-        let entry = new Gtk.Entry({
+        let domainEntry = new Gtk.Entry({
             activates_default: true,
             margin: 5
         });
-        entry.connect('changed', Lang.bind(this, function() {
-            btn.sensitive = (entry.get_text() != '');
+        domainEntry.connect('changed', Lang.bind(this, function() {
+            okButton.sensitive = (domainEntry.get_text() != '');
         }));
-        dialog.get_content_area().add(entry);
+        recentDomainDialog.get_content_area().add(domainEntry);
 
         // response action
-        dialog.connect('response', Lang.bind(this, function(w, r) {
+        recentDomainDialog.connect('response', Lang.bind(this, function(w, r) {
             if (r == Gtk.ResponseType.OK) {
-                let domain = entry.get_text();
+                let domain = domainEntry.get_text();
                 this.addRecentDomain(domain);
             }
             
-            dialog.destroy();
+            recentDomainDialog.destroy();
         }));
         
-        dialog.show_all();
+        recentDomainDialog.show_all();
     },
     
     onRecentDomainKeypress: function(w, e) {
@@ -109,12 +109,12 @@ const PassCalcPrefsWidget = new GObject.Class({
     },
     
     onRecentDomainRemove: function() {
-        let [any, model, iter] = this._recentDomainTreeviewSelection.get_selected();
+        let [any, model, iter] = this._recentDomainsTreeviewSelection.get_selected();
         if (!any) {
             return;
         }
         
-        this.removeRecentDomain(this._recentDomainStore.get_value(iter, 0));
+        this.removeRecentDomain(this._recentDomainsStore.get_value(iter, 0));
     },    
     
     onShortcutKeybindAccelCleared: function(renderer, path) {
@@ -139,7 +139,7 @@ const PassCalcPrefsWidget = new GObject.Class({
         
         current.unshift(domain);
         this.getSettings().set_strv(C.SETTINGS_RECENT_DOMAINS, current);
-        this.updateRecentDomainStore(current);
+        this.updateRecentDomainsStore(current);
     },
     
     removeRecentDomain: function(domain) {
@@ -149,16 +149,16 @@ const PassCalcPrefsWidget = new GObject.Class({
         if (index >= 0) {
             current.splice(index, 1);
             this.getSettings().set_strv(C.SETTINGS_RECENT_DOMAINS, current);
-            this.updateRecentDomainStore(current);
+            this.updateRecentDomainsStore(current);
         }
     },
     
-    updateRecentDomainStore: function(list) {
-        this._recentDomainStore.clear();
+    updateRecentDomainsStore: function(list) {
+        this._recentDomainsStore.clear();
         
         for (let i=0,l=list.length; i<l; i++) {
-            let iter = this._recentDomainStore.append();
-            this._recentDomainStore.set(iter, [ 0 ], [ list[i] ]);
+            let iter = this._recentDomainsStore.append();
+            this._recentDomainsStore.set(iter, [ 0 ], [ list[i] ]);
         }
     },
     
@@ -189,12 +189,12 @@ const PassCalcPrefsWidget = new GObject.Class({
 
         // recent domain treeview
         let recentDomains = this.getSettings().get_strv(C.SETTINGS_RECENT_DOMAINS);
-        this.updateRecentDomainStore(recentDomains);
-        this._recentDomainTreeview.connect('key-release-event', Lang.bind(this, this.onRecentDomainKeypress));
+        this.updateRecentDomainsStore(recentDomains);
+        this._recentDomainsTreeview.connect('key-release-event', Lang.bind(this, this.onRecentDomainKeypress));
 
-        let renderer = new Gtk.CellRendererText();
-        this._recentDomainTreeviewIdColumn.pack_start(renderer, true);
-        this._recentDomainTreeviewIdColumn.add_attribute(renderer, 'text', 0);
+        let recentDomainsRenderer = new Gtk.CellRendererText();
+        this._recentDomainsTreeviewIdColumn.pack_start(recentDomainsRenderer, true);
+        this._recentDomainsTreeviewIdColumn.add_attribute(recentDomainsRenderer, 'text', 0);
 
         // recent domain add button
         this._recentDomainAdd.connect('clicked', Lang.bind(this, this.onRecentDomainAdd));
@@ -224,23 +224,23 @@ const PassCalcPrefsWidget = new GObject.Class({
         this._shortcutKeybindStoreIter = this._shortcutKeybindStore.append();
         let accel = this.getSettings().get_strv(C.SETTINGS_SHORTCUT_KEYBIND)[0];
         this.updateShortcutKeybindStore(accel);
-        let renderer = new Gtk.CellRendererAccel({
+        let accelRenderer = new Gtk.CellRendererAccel({
             editable: true
         });
-        renderer.connect('accel-cleared', Lang.bind(this, this.onShortcutKeybindAccelCleared));
-        renderer.connect('accel-edited', Lang.bind(this, this.onShortcutKeybindAccelEdited));
-        this._shortcutKeybindTreeviewColumn.pack_start(renderer, true);
-        this._shortcutKeybindTreeviewColumn.add_attribute(renderer, 'accel-key', 0);
-        this._shortcutKeybindTreeviewColumn.add_attribute(renderer, 'accel-mods', 1);
+        accelRenderer.connect('accel-cleared', Lang.bind(this, this.onShortcutKeybindAccelCleared));
+        accelRenderer.connect('accel-edited', Lang.bind(this, this.onShortcutKeybindAccelEdited));
+        this._shortcutKeybindTreeviewColumn.pack_start(accelRenderer, true);
+        this._shortcutKeybindTreeviewColumn.add_attribute(accelRenderer, 'accel-key', 0);
+        this._shortcutKeybindTreeviewColumn.add_attribute(accelRenderer, 'accel-mods', 1);
 
         // computation method combobox
-        let iter = this._compMethodStore.append();
-        this._compMethodStore.set(iter, [ 0, 1 ], [ E.COMP_METHOD.CONCAT, _('String concatenation') ]);
-        let iter = this._compMethodStore.append();
-        this._compMethodStore.set(iter, [ 0, 1 ], [ E.COMP_METHOD.KDF, _('Key derivation function') ]);
-        let renderer = new Gtk.CellRendererText();
-        this._compMethodCombo.pack_start(renderer, true);
-        this._compMethodCombo.add_attribute(renderer, 'text', 1);
+        let compMethodStoreIter = this._compMethodStore.append();
+        this._compMethodStore.set(compMethodStoreIter, [ 0, 1 ], [ E.COMP_METHOD.CONCAT, _('String concatenation') ]);
+        compMethodStoreIter = this._compMethodStore.append();
+        this._compMethodStore.set(compMethodStoreIter, [ 0, 1 ], [ E.COMP_METHOD.KDF, _('Key derivation function') ]);
+        let compMethodRenderer = new Gtk.CellRendererText();
+        this._compMethodCombo.pack_start(compMethodRenderer, true);
+        this._compMethodCombo.add_attribute(compMethodRenderer, 'text', 1);
         this._compMethodCombo.set_active_id(this.getSettings().get_enum(C.SETTINGS_COMP_METHOD).toString());
         this._compMethodCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
@@ -255,13 +255,13 @@ const PassCalcPrefsWidget = new GObject.Class({
         }));
 
         // string concatenation hash type combobox
-        let iter = this._hashTypeStore.append();
-        this._hashTypeStore.set(iter, [ 0, 1 ], [ E.HASH_TYPE.SHA256, _('SHA-256') ]);
-        let iter = this._hashTypeStore.append();
-        this._hashTypeStore.set(iter, [ 0, 1 ], [ E.HASH_TYPE.SHA512, _('SHA-512') ]);
-        let renderer = new Gtk.CellRendererText();
-        this._hashTypeCombo.pack_start(renderer, true);
-        this._hashTypeCombo.add_attribute(renderer, 'text', 1);
+        let hashTypeStoreIter = this._hashTypeStore.append();
+        this._hashTypeStore.set(hashTypeStoreIter, [ 0, 1 ], [ E.HASH_TYPE.SHA256, _('SHA-256') ]);
+        hashTypeStoreIter = this._hashTypeStore.append();
+        this._hashTypeStore.set(hashTypeStoreIter, [ 0, 1 ], [ E.HASH_TYPE.SHA512, _('SHA-512') ]);
+        let hashTypeRenderer = new Gtk.CellRendererText();
+        this._hashTypeCombo.pack_start(hashTypeRenderer, true);
+        this._hashTypeCombo.add_attribute(hashTypeRenderer, 'text', 1);
         this._hashTypeCombo.set_active_id(this.getSettings().get_enum(C.SETTINGS_HASH_TYPE).toString());
         this._hashTypeCombo.connect('changed', Lang.bind(this, function(w) {
             let [success, iter] = w.get_active_iter();
@@ -274,12 +274,12 @@ const PassCalcPrefsWidget = new GObject.Class({
         }));
 
         // key derivation function combobox
-        let iter = this._kdfTypeStore.append();
-        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA256, _('HKDF-SHA256') ]);
-        let iter = this._kdfTypeStore.append();
-        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA512, _('HKDF-SHA512') ]);
-        let iter = this._kdfTypeStore.append();
-        this._kdfTypeStore.set(iter, [ 0, 1 ], [ E.KDF_TYPE.PBKDF2_HMAC_SHA256, _('PBKDF2-HMAC-SHA256') ]);
+        let kdfTypeStoreIter = this._kdfTypeStore.append();
+        this._kdfTypeStore.set(kdfTypeStoreIter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA256, _('HKDF-SHA256') ]);
+        kdfTypeStoreIter = this._kdfTypeStore.append();
+        this._kdfTypeStore.set(kdfTypeStoreIter, [ 0, 1 ], [ E.KDF_TYPE.HKDF_SHA512, _('HKDF-SHA512') ]);
+        kdfTypeStoreIter = this._kdfTypeStore.append();
+        this._kdfTypeStore.set(kdfTypeStoreIter, [ 0, 1 ], [ E.KDF_TYPE.PBKDF2_HMAC_SHA256, _('PBKDF2-HMAC-SHA256') ]);
         let renderer = new Gtk.CellRendererText();
         this._kdfTypeCombo.pack_start(renderer, true);
         this._kdfTypeCombo.add_attribute(renderer, 'text', 1);
@@ -327,38 +327,38 @@ const PassCalcPrefsWidget = new GObject.Class({
 
     _loadUiFile: function() {
         let uiFile = Me.path + this.UI_FILE;
+        let uiBuilder = new Gtk.Builder();
 
-        this._uiBuilder = new Gtk.Builder();
-        if (this._uiBuilder.add_from_file(uiFile) == 0) {
+        if (uiBuilder.add_from_file(uiFile) == 0) {
             log('could not load the ui file: %s'.format(uiFile));
             return;
         }
 
-        this._mainBox = this._uiBuilder.get_object('main-box');
-        this._showCopyNotificationSwitch = this._uiBuilder.get_object('show-copy-notification-switch');
-        this._shortcutKeybindTreeviewColumn = this._uiBuilder.get_object('shortcut-keybind-treeview-column');
-        this._shortcutKeybindStore = this._uiBuilder.get_object('shortcut-keybind-store');
-        this._shortcutKeybindTreeview = this._uiBuilder.get_object('shortcut-keybind-treeview');
-        this._clipboardTimeoutEntry = this._uiBuilder.get_object('clipboard-timeout-entry');
-        this._maxRecentDomainsEntry = this._uiBuilder.get_object('max-recent-domains-entry');
-        this._compMethodStore = this._uiBuilder.get_object('comp-method-store');
-        this._compMethodCombo = this._uiBuilder.get_object('comp-method-combo');
-        this._hashTypeStore = this._uiBuilder.get_object('hash-type-store');
-        this._hashTypeCombo = this._uiBuilder.get_object('hash-type-combo');
-        this._kdfTypeStore = this._uiBuilder.get_object('kdf-type-store');
-        this._kdfTypeCombo = this._uiBuilder.get_object('kdf-type-combo');
-        this._passwordLengthEntry = this._uiBuilder.get_object('password-length-entry');
-        this._passwordSaltEntry = this._uiBuilder.get_object('password-salt-entry');
-        this._removeLowerAlphaCheck = this._uiBuilder.get_object('remove-lower-alpha-check');
-        this._removeUpperAlphaCheck = this._uiBuilder.get_object('remove-upper-alpha-check');
-        this._removeNumericCheck = this._uiBuilder.get_object('remove-numeric-check');
-        this._removeSymbolsCheck = this._uiBuilder.get_object('remove-symbols-check');
-        this._recentDomainStore = this._uiBuilder.get_object('recent-domains-store');
-        this._recentDomainTreeview = this._uiBuilder.get_object('recent-domains-treeview');
-        this._recentDomainTreeviewSelection = this._uiBuilder.get_object('recent-domains-treeview-selection');
-        this._recentDomainTreeviewIdColumn = this._uiBuilder.get_object('recent-domains-treeview-id-column');
-        this._recentDomainAdd = this._uiBuilder.get_object('recent-domains-add');
-        this._recentDomainRemove = this._uiBuilder.get_object('recent-domains-remove');
+        this._mainBox = uiBuilder.get_object('main-box');
+        this._showCopyNotificationSwitch = uiBuilder.get_object('show-copy-notification-switch');
+        this._shortcutKeybindTreeviewColumn = uiBuilder.get_object('shortcut-keybind-treeview-column');
+        this._shortcutKeybindStore = uiBuilder.get_object('shortcut-keybind-store');
+        this._shortcutKeybindTreeview = uiBuilder.get_object('shortcut-keybind-treeview');
+        this._clipboardTimeoutEntry = uiBuilder.get_object('clipboard-timeout-entry');
+        this._maxRecentDomainsEntry = uiBuilder.get_object('max-recent-domains-entry');
+        this._compMethodStore = uiBuilder.get_object('comp-method-store');
+        this._compMethodCombo = uiBuilder.get_object('comp-method-combo');
+        this._hashTypeStore = uiBuilder.get_object('hash-type-store');
+        this._hashTypeCombo = uiBuilder.get_object('hash-type-combo');
+        this._kdfTypeStore = uiBuilder.get_object('kdf-type-store');
+        this._kdfTypeCombo = uiBuilder.get_object('kdf-type-combo');
+        this._passwordLengthEntry = uiBuilder.get_object('password-length-entry');
+        this._passwordSaltEntry = uiBuilder.get_object('password-salt-entry');
+        this._removeLowerAlphaCheck = uiBuilder.get_object('remove-lower-alpha-check');
+        this._removeUpperAlphaCheck = uiBuilder.get_object('remove-upper-alpha-check');
+        this._removeNumericCheck = uiBuilder.get_object('remove-numeric-check');
+        this._removeSymbolsCheck = uiBuilder.get_object('remove-symbols-check');
+        this._recentDomainsStore = uiBuilder.get_object('recent-domains-store');
+        this._recentDomainsTreeview = uiBuilder.get_object('recent-domains-treeview');
+        this._recentDomainsTreeviewSelection = uiBuilder.get_object('recent-domains-treeview-selection');
+        this._recentDomainsTreeviewIdColumn = uiBuilder.get_object('recent-domains-treeview-id-column');
+        this._recentDomainAdd = uiBuilder.get_object('recent-domains-add');
+        this._recentDomainRemove = uiBuilder.get_object('recent-domains-remove');
     }
 });
 
