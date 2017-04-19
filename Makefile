@@ -1,4 +1,5 @@
 PLUGINNAME = passcalc
+PLUGINUUID = passcalc@raven-systems.eu
 VERSION = 3.24
 
 dist-filename = gnome-shell-extension-$(PLUGINNAME)
