@@ -1,6 +1,23 @@
-*.iml
+#
+# Build objects and directories
+#
+/schemas/gschemas.compiled
+
+#
+# Distribution archives (make dist)
+#
+/gnome-shell-extension-passcalc.tar.gz
+/gnome-shell-extension-passcalc.tar.xz
+
+#
+# Release archives (make release)
+#
+/gnome-shell-extension-passcalc-*.tar.gz
+/gnome-shell-extension-passcalc-*.tar.xz
+/gnome-shell-extension-passcalc-*.zip
+
+#
+# IntelliJ IDEA Project files
+#
 .idea/
-
-
-build/
-schemas/gschemas.compiled
+*.iml
